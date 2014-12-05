@@ -33,6 +33,7 @@ gem 'd3_rails'
 # Use unicorn as the app server
 gem 'unicorn'
 
+gem 'gon'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
