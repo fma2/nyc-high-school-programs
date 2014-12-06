@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  root "schools#index"
+  root "welcome#index"
+  get '/program_search' => 'programs#search'
+  get '/results_map' => 'programs#map_results'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
