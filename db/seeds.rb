@@ -21,7 +21,11 @@ high_school_directory_2014_15 = JSON.parse(open('http://data.cityofnewyork.us/re
 high_school_program_data = JSON.parse(open('http://data.cityofnewyork.us/resource/mreg-rk5p.json'))
 
 high_school_directory_2014_15.each do |school|
-	School.create(phone_number: school["phone_number"], grade_span_min: school["grade_span_min"], grade_span_max: school["grade_span_max"], primary_address_line_1: school["primary_address_line_1"], city: school["city"], state_code: school["state_code"], zip: school["zip"], school_type: school["school_type"], latitude: school["location_1"]["latitude"], longitude: school["location_1"]["longitude"], se_services: school["se_services"], total_students: school["total_students"], program_highlights: school["program_highlights"], overview_paragraph: school["overview_paragraph"], website: school["website"], extracurricular_activities: school["extracurricular_activities"], boro: school["boro"], dbn: school["dbn"])			
+	school = School.create(phone_number: school["phone_number"], grade_span_min: school["grade_span_min"], grade_span_max: school["grade_span_max"], primary_address_line_1: school["primary_address_line_1"], city: school["city"], state_code: school["state_code"], zip: school["zip"], school_type: school["school_type"], latitude: school["location_1"]["latitude"], longitude: school["location_1"]["longitude"], se_services: school["se_services"], total_students: school["total_students"], program_highlights: school["program_highlights"], overview_paragraph: school["overview_paragraph"], website: school["website"], extracurricular_activities: school["extracurricular_activities"], boro: school["boro"], dbn: school["dbn"], school_name: school["school_name"])
+	if school.school_type == nil
+		school.update(school_type: "No specific type")
+		school.save
+	end
 end
 
 high_school_program_data.each do |program|
