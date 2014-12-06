@@ -35,5 +35,12 @@ high_school_program_data = JSON.parse(open('http://data.cityofnewyork.us/resourc
 # end
 
 high_school_directory_2014_15.each do |school|
-	School.create(phone_number: school["phone_number"], grade_span_min: school["grade_span_min"], grade_span_max: school["grade_span_max"], primary_address_line_1: school["primary_address_line_1"], city: school["city"], state_code: school["state_code"], zip: school["zip"], school_type: school["school_type"], latitude: school["location_1"]["latitude"], longitude: school["location_1"]["longitude"], se_services: school["se_services"], total_students: school["total_students"], program_highlights: school["program_highlights"], overview_paragraph: school["overview_paragraph"], website: school["website"], extracurricular_activities: school["extracurricular_activities"], boro: school["boro"])			
+	School.create(phone_number: school["phone_number"], grade_span_min: school["grade_span_min"], grade_span_max: school["grade_span_max"], primary_address_line_1: school["primary_address_line_1"], city: school["city"], state_code: school["state_code"], zip: school["zip"], school_type: school["school_type"], latitude: school["location_1"]["latitude"], longitude: school["location_1"]["longitude"], se_services: school["se_services"], total_students: school["total_students"], program_highlights: school["program_highlights"], overview_paragraph: school["overview_paragraph"], website: school["website"], extracurricular_activities: school["extracurricular_activities"], boro: school["boro"], dbn: school["dbn"])			
+end
+
+high_school_program_data.each do |program|
+	school = School.find_by(dbn: program["dbn"])
+	if school
+		school.programs << Program.create(program_code: program["program_code"], program_name: program["program_name"], dbn: program["dbn"], printed_school_name: program["printed_school_name"], interest_area: program["interest_area"], selection_method: program["selection_method"], selection_method_abbrevi: program["selection_method_abbreviated"], directory_page_: program["directory_page_"], borough: program["borough"], urls: program["urls"])
+	end
 end
