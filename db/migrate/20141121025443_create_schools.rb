@@ -1,16 +1,16 @@
 class CreateSchools < ActiveRecord::Migration
   def change
     create_table :schools do |t|
-    	t.string :program_code
-    	t.string :program_name
-    	t.string :dbn
-    	t.string :printed_school_name
-    	t.string :interest_area
-    	t.string :selection_method
-    	t.string :selection_method_abbrevi
-    	t.string :directory_page_
-    	t.string :borough
-    	t.string :urls
+    	# t.string :program_code
+    	# t.string :program_name
+    	# t.string :dbn
+    	# t.string :printed_school_name
+    	# t.string :interest_area
+    	# t.string :selection_method
+    	# t.string :selection_method_abbrevi
+    	# t.string :directory_page_
+    	# t.string :borough
+    	# t.string :urls
 
     	t.string :phone_number
     	t.string :grade_span_min
@@ -22,6 +22,15 @@ class CreateSchools < ActiveRecord::Migration
     	t.string :school_type
     	t.string :latitude
     	t.string :longitude
+        t.text :se_services
+        t.string :total_students
+        t.text :program_highlights
+        t.text :overview_paragraph
+        t.string :website
+        t.text :extracurricular_activities
+        t.string :boro
+        t.string :dbn
+        t.string :school_name
 
       t.timestamps
     end
