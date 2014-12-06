@@ -4,5 +4,4 @@ class SchoolsController < ApplicationController
 		gon.schools = School.all
 	end
 
-
 end
