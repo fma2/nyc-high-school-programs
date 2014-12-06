@@ -11,12 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141121025443) do
+ActiveRecord::Schema.define(version: 20141205225139) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "schools", force: true do |t|
+  create_table "programs", force: true do |t|
     t.string   "program_code"
     t.string   "program_name"
     t.string   "dbn"
@@ -27,6 +27,12 @@ ActiveRecord::Schema.define(version: 20141121025443) do
     t.string   "directory_page_"
     t.string   "borough"
     t.string   "urls"
+    t.integer  "school_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "schools", force: true do |t|
     t.string   "phone_number"
     t.string   "grade_span_min"
     t.string   "grade_span_max"
@@ -37,6 +43,14 @@ ActiveRecord::Schema.define(version: 20141121025443) do
     t.string   "school_type"
     t.string   "latitude"
     t.string   "longitude"
+    t.text     "se_services"
+    t.string   "total_students"
+    t.text     "program_highlights"
+    t.text     "overview_paragraph"
+    t.string   "website"
+    t.text     "extracurricular_activities"
+    t.string   "boro"
+    t.string   "dbn"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
