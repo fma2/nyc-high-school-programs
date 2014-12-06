@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 20141205225139) do
     t.text     "extracurricular_activities"
     t.string   "boro"
     t.string   "dbn"
+    t.string   "school_name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
