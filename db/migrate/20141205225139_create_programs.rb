@@ -11,6 +11,8 @@ class CreatePrograms < ActiveRecord::Migration
     	t.string :directory_page_
     	t.string :borough
     	t.string :urls
+
+    	t.references :school
       t.timestamps
     end
   end
