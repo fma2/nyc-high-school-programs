@@ -41,3 +41,5 @@ gem 'gon'
 # gem 'debugger', group: [:development, :test]
 
 gem 'foundation-rails'
+
+gem 'pg_search'
