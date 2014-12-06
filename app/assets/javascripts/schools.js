@@ -8,7 +8,7 @@
 
 function prepareDataforMap(schoolData) {
   var schoolDataAry = new Array();
-  for (i = 0; i < schoolData.length; i++) {
+  for (i = 0; i < schoolData.length; ++i) {
     schoolDataAry.push(
       [schoolData[i].school_name, 
       parseFloat(schoolData[i].latitude), 
@@ -83,7 +83,8 @@ function initialize() {
   var mapOptions = {
     center: { lat: 40.718961617000446, lng: -73.97606602099967},
     zoom: 11,
-    styles: styleArray
+    styles: styleArray,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   var map = new google.maps.Map(document.getElementById('map-canvas'),
       mapOptions);
@@ -112,3 +113,7 @@ function initialize() {
   // var markerCluster = new MarkerClusterer(map, markers);
 }
 google.maps.event.addDomListener(window, 'load', initialize);
+
+$("#search_text").keyup(function(event) {
+  $.get('/program_search?search='+ $(this).val());
+});
