@@ -10,48 +10,16 @@
 	<%= javascript_include_tag "vendor/modernizr" %>
 	<%= csrf_meta_tags %>
   <%= include_gon %>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
   <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.js'></script>
   <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.css' rel='stylesheet' />
+  <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
+
+  <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
+  <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet'/>
 </head>
 <body>
-<!-- 	  <div class="row">
-      <div class="large-3 columns">
- -->        <!-- <h1><img src="http://placehold.it/400x100&text=Logo"></h1> -->
-      <!-- </div>
-      <div class="large-9 columns">
-        <ul class="button-group right">
-          <li><a href="/" class="button">home</a></li>
-          <li><a href="#map" class="button">map</a></li>
-          <li><a href="#" class="button">stats</a></li>
-          <li><a href="#" class="button">Link 4</a></li>
-        </ul>
-      </div>
-    </div>
- -->
-<%= yield %>
-<%= javascript_include_tag "application" %>
-<footer class="row">
-  <div class="large-12 columns">
-    <hr/>
-    <div class="row">
-      <div class="large-6 columns">
-        <p>© Copyright no one at all. Go to town.</p>
-      </div>
-      <div class="large-6 columns">
-        <ul class="inline-list right">
-          <li><a href="/schools">Map</a></li>
-          <li><a href="#">Link 2</a></li>
-          <li><a href="#">Link 3</a></li>
-          <li><a href="#">Link 4</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</footer>
+  <%= yield %>
+  <%= javascript_include_tag "application" %>
 </body>
 </html>
-<script type="text/javascript">
-  $("#search_text").keyup(function(event) {
-    $.get('/program_search?search='+ $(this).val());
-});
-</script>
