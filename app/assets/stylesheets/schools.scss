@@ -63,3 +63,40 @@
 	right:10px;
 	top:10px
 }
+
+ #marker-list {
+      position:absolute;
+      top:100px; right:0; width:200px;
+      bottom:0;
+      overflow-x:auto;
+      background:#fff;
+      margin:0;
+      padding:5px;
+  }
+  #marker-list li {
+      padding:5px;
+      margin:0;
+      list-style-type:none;
+  }
+  #marker-list li:hover {
+      background:#eee;
+  }
+
+  pre.ui-output {
+    display:block;
+    position:absolute;
+    bottom:10px;
+    left:10px;
+    padding:5px 10px;
+    background:rgba(0,0,0,0.5);
+    color:#fff;
+    font-size:11px;
+    line-height:18px;
+    border-radius:3px;
+    max-height:50%;
+    max-width:25%;
+    overflow:auto;
+    word-wrap: break-word;
+    white-space:pre-wrap;
+    }
+    pre.ui-output:empty { padding:0; }
