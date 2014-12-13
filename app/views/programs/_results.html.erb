@@ -1,0 +1,8 @@
+<h6># programs found: <%= @results.length %></h5>
+<% @results.each do |item| %>
+<div class="result-item">
+	<p><%= link_to(item.interest_area, "/results_map?search='#{item.interest_area}'") %> (interest area)</p>
+	<p><%= link_to(item.program_name, "/results_map?search='#{item.program_name}'") %> (program name)</p>
+</p>
+</div>
+<% end %>

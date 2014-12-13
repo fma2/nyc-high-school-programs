@@ -1,114 +1,266 @@
-// jQuery(function($) {
-//     // Asynchronously Load the map API 
-//     var script = document.createElement('script');
-//     script.src = "http://maps.googleapis.com/maps/api/js?sensor=false&callback=initialize";
-//     document.body.appendChild(script);
-// });
+//Mapbox access token
+L.mapbox.accessToken = 'pk.eyJ1IjoiZm1hMiIsImEiOiJkcmdtd0NjIn0.dw0I__cIjfXpz37Yj0DQmw';
 
 
-function prepareDataforMap(schoolData) {
-  var schoolDataAry = new Array();
-  for (i = 0; i < schoolData.length; i++) {
-    schoolDataAry.push(
-      [schoolData[i].school_name, 
-      parseFloat(schoolData[i].latitude), 
-      parseFloat(schoolData[i].longitude), 
-      schoolData[i].primary_address_line_1, 
-      schoolData[i].city, 
-      schoolData[i].state_code, 
-      schoolData[i].zip, 
-      schoolData[i].school_type, 
-      schoolData[i].total_students,
-      schoolData[i].program_highlights,
-      schoolData[i].overview_paragraph,
-      schoolData[i].extracurricular_activities,
-      schoolData[i].website
-      ])
-  };
-  return schoolDataAry;
+//Place map
+var map = L.mapbox.map('map', 'fma2.keb4h838').setView([40.78,-73.94], 11);
+
+
+//Place markers
+$(document).ready(function() {
+  $.ajax({
+    dataType: 'json',
+    url: '/',
+    type: 'GET'
+  }).success(function(data) {  
+      map.featureLayer.setGeoJSON(data);
+    })
+  });
+
+//Add custom popups for each marker
+map.featureLayer.on('layeradd', function(e) {
+  marker = e.layer;
+  properties = marker.feature.properties;
+  popupContent = '<div class="popup">' + 
+                  '<h3>' + properties.name + '</h3>' +
+                  '<p>' + properties.address + ', ' + properties.zip + '</p>' +
+                  '<p>Grades: '+ properties.grade_span_min + ' to ' + properties.grade_span_max + '</p>'
+                     '<p>'+'</p>'
+                  '<p>'+'</p>'
+                  '<p>'+'</p>'
+
+                  '</div>'
+  marker.bindPopup(popupContent, {
+    closeButton: false, 
+    minWidth: 320
+  });
+})
+
+//Add Marker list on right
+var markerList = document.getElementById('marker-list');
+map.featureLayer.on('layeradd', function(e) {
+    map.featureLayer.eachLayer(function(layer) {
+        var item = markerList.appendChild(document.createElement('li'));
+        item.innerHTML = layer.toGeoJSON().properties.name;
+        item.onclick = function() {
+           map.setView(layer.getLatLng(), 14);
+           layer.openPopup();
+        };
+    });
+});
+
+var output = document.getElementById('output');
+// Initialize the geocoder control and add it to the map.
+var geocoderControl = L.mapbox.geocoderControl('mapbox.places-v1');
+geocoderControl.addTo(map);
+
+// Listen for the `found` result and display the first result
+// in the output container. For all available events, see
+// https://www.mapbox.com/mapbox.js/api/v2.1.4/l-mapbox-geocodercontrol/#section-geocodercontrol-on
+geocoderControl.on('found', function(res) {
+    output.innerHTML = JSON.stringify(res.results.features[0]);
+});
+
+//Add MarkerClusterer
+$(document).ready(function() {
+  $.ajax({
+    dataType: 'json',
+    url: '/',
+    type: 'GET'
+  }).success(function(data) {  
+      var markers = new L.MarkerClusterGroup();
+      for (var i = 0; i< data.length; i++) {
+        var schoolData = data[i], schoolProperties = schoolData.properties, title = schoolProperties.name;
+        var popupContent = '<div class="popup">' + 
+                  '<h3>' + schoolProperties.name + '</h3>' +
+                  '<p>' + schoolProperties.address + ', ' + schoolProperties.zip + '</p>' +
+                  '<p>Grades: '+ schoolProperties.grade_span_min + ' to ' + schoolProperties.grade_span_max + '</p>'
+                     '<p>'+'</p>'
+                  '<p>'+'</p>'
+                  '<p>'+'</p>'
+
+                  '</div>'
+        var marker = L.marker(
+          new L.LatLng(schoolData.geometry.coordinates[1], schoolData.geometry.coordinates[0]), {
+          icon: L.mapbox.marker.icon({'marker-color': '0044FF'}),
+          title: title,
+
+        });
+        marker.bindPopup(popupContent, {
+          closeButton: false, 
+          minWidth: 320
+        });
+        markers.addLayer(marker);
+      }
+      map.addLayer(markers)
+    })
+  });
+
+//Filter sidebar
+var newSchools = document.getElementById('filter-new-schools');
+var consortiumSchools = document.getElementById('filter-consortium-schools');
+var cteSchools = document.getElementById('filter-cte-schools');
+var allGirlsSchools = document.getElementById('filter-all-girls-schools');
+var internationalSchools = document.getElementById('filter-international-schools');
+var specializedSchools = document.getElementById('filter-specialized-schools');
+var nycPTechSchools = document.getElementById('filter-p-tech-schools');
+var allBoysSchools = document.getElementById('filter-all-boys-schools');
+var all = document.getElementById('filter-all');
+
+newSchools.onclick = function(e) {
+  consortiumSchools.className = '';
+  cteSchools.className = '';
+  allGirlsSchools.className = '';
+  internationalSchools.className = '';
+  specializedSchools.className = '';
+  nycPTechSchools.className = '';
+  allBoysSchools.className = '';
+  all.className = '';
+
+  this.className = 'active';
+  // The setFilter function takes a GeoJSON feature object
+  // and returns true to show it or false to hide it.
+  map.featureLayer.setFilter(function(f) {
+    return f.properties['type'] === 'New School';
+  });
+  return false;
 };
-function addMarker(school_name, lat, lng, address, city, state, zip, school_type, total_students, program_highlights, overview_paragraph, extracurricular_activities, website, map) {
-  var point = new google.maps.LatLng(lat, lng);
-  var marker = new google.maps.Marker({
-      position: point,
-      icon: "https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle_blue.png",
-      map: map,
-      title: school_name
-  });
 
-   var contentString = '<div id="content">'+
-      '<div id="siteNotice">'+
-      '</div>'+
-      '<h3 id="firstHeading" class="firstHeading">' + school_name + '</h3>' +
-      '<div id="bodyContent">'+
-      '<p><b>Address: </b>' + address + ', ' + city + ', ' + state + ' ' + zip + '<br>' +
-      '<b>Type of School: </b>' + school_type + '</p>' +
-      '<p><b>Overview: </b>' + overview_paragraph + '<br>' +
-      '<b>Program Highlights: </b>' + program_highlights + '<br>' +
-      '<b>Extracurricular Activities: </b>' + extracurricular_activities+ '<br>' +
-      '<b>Website: <a href=' + website + '>'+ website + '</a><br><br>' + 
-      '</div>'+
-      '</div>';
-
-  var infowindow = new google.maps.InfoWindow({ content: contentString });
-  google.maps.event.addListener(marker, 'click', function() {
-      infowindow.setContent(contentString);
-      infowindow.open(map, marker);
+consortiumSchools.onclick = function(e) {
+  newSchools.className = '';
+  cteSchools.className = '';
+  allGirlsSchools.className = '';
+  internationalSchools.className = '';
+  specializedSchools.className = '';
+  nycPTechSchools.className = '';
+  allBoysSchools.className = '';
+  all.className = '';
+  
+  this.className = 'active';
+  // The setFilter function takes a GeoJSON feature object
+  // and returns true to show it or false to hide it.
+  map.featureLayer.setFilter(function(f) {
+    return f.properties['type'] === 'Consortium School';
   });
+  return false;
 }
 
-function initialize() {
-  var styleArray = [
-  {
-    featureType: "all",
-    stylers: [
-      { saturation: -80 }
-    ]
-  },{
-    featureType: "road.arterial",
-    elementType: "geometry",
-    stylers: [
-      { hue: "#00ffee" },
-      { saturation: 50 }
-    ]
-  },{
-    featureType: "poi.business",
-    elementType: "labels",
-    stylers: [
-      { visibility: "off" }
-    ]
-  }
-  ];
-
-  var mapOptions = {
-    center: { lat: 40.718961617000446, lng: -73.97606602099967},
-    zoom: 11,
-    styles: styleArray
-  };
-  var map = new google.maps.Map(document.getElementById('map-canvas'),
-      mapOptions);
-  map.setTilt(45);
-
-  //test markers
-  // addMarker("Hello", 40.718961617000446, -73.97606602099967, map);
-  // addMarker("Yo", 40.8, -73.97606602099967, map);
-  // addMarker("Hi", 40.723, -73.97606602099967, map);
-
-  var schoolData = prepareDataforMap(gon.schools);
-  for (i = 0; i < schoolData.length; i++) {
-    addMarker(schoolData[i][0], schoolData[i][1], schoolData[i][2], schoolData[i][3],schoolData[i][4],schoolData[i][5], schoolData[i][6], schoolData[i][7], schoolData[i][8], schoolData[i][9], schoolData[i][10], schoolData[i][11], schoolData[i][12], map)
-  }
-
-  // Marker Clusterer code
-  // var schoolData= prepareDataforMap(gon.schools);
-  // var markers = [];
-  // for (var i = 0; i < schoolData.length; ++i) {
-  //   if (schoolData[i][1] != null || schoolData[i][2] != null) {
-  //     var latlng = new google.maps.LatLng(schoolData[i][1], schoolData[i][2]);
-  //     var marker = new google.maps.Marker(latlng);
-  //     markers.push(marker);
-  //   }
-  // }
-  // var markerCluster = new MarkerClusterer(map, markers);
+cteSchools.onclick = function(e) {
+  newSchools.className = '';
+  consortiumSchools.className = '';
+  allGirlsSchools.className = '';
+  internationalSchools.className = '';
+  specializedSchools.className = '';
+  nycPTechSchools.className = '';
+  allBoysSchools.className = '';
+  all.className = '';
+  
+  this.className = 'active';
+  map.featureLayer.setFilter(function(f) {
+    return f.properties['type'] === 'CTE School';
+  });
+  return false;
 }
-google.maps.event.addDomListener(window, 'load', initialize);
+
+allGirlsSchools.onclick = function(e) {
+  newSchools.className = '';
+  consortiumSchools.className = '';
+  cteSchools.className = '';
+  internationalSchools.className = '';
+  specializedSchools.className = '';
+  nycPTechSchools.className = '';
+  allBoysSchools.className = '';
+  all.className = '';
+  
+  this.className = 'active';
+  map.featureLayer.setFilter(function(f) {
+    return f.properties['type'] === 'All-Girls School';
+  });
+  return false;
+}
+
+internationalSchools.onclick = function(e) {
+  newSchools.className = '';
+  consortiumSchools.className = '';
+  cteSchools.className = '';
+  allGirlsSchools.className = '';
+  specializedSchools.className = '';
+  nycPTechSchools.className = '';
+  allBoysSchools.className = '';
+  all.className = '';
+  
+  this.className = 'active';
+  map.featureLayer.setFilter(function(f) {
+    return f.properties['type'] === 'International School';
+  });
+  return false;
+}
+
+specializedSchools.onclick = function(e) {
+  newSchools.className = '';
+  consortiumSchools.className = '';
+  cteSchools.className = '';
+  allGirlsSchools.className = '';
+  internationalSchools.className = '';
+  nycPTechSchools.className = '';
+  allBoysSchools.className = '';
+  all.className = '';
+  
+  this.className = 'active';
+  map.featureLayer.setFilter(function(f) {
+    return f.properties['type'] === 'Specialized School';
+  });
+  return false;
+}
+
+nycPTechSchools.onclick = function(e) {
+  newSchools.className = '';
+  consortiumSchools.className = '';
+  cteSchools.className = '';
+  allGirlsSchools.className = '';
+  internationalSchools.className = '';
+  specializedSchools.className = '';
+  allBoysSchools.className = '';
+  all.className = '';
+  
+  this.className = 'active';
+  map.featureLayer.setFilter(function(f) {
+    return f.properties['type'] === 'NYC P-Tech 9-14, New School';
+  });
+  return false;
+}
+
+
+allBoysSchools.onclick = function(e) {
+  newSchools.className = '';
+  consortiumSchools.className = '';
+  cteSchools.className = '';
+  allGirlsSchools.className = '';
+  internationalSchools.className = '';
+  specializedSchools.className = '';
+  nycPTechSchools.className = '';
+  all.className = '';
+  
+  this.className = 'active';
+  map.featureLayer.setFilter(function(f) {
+    return f.properties['type'] === 'All-Boys School';
+  });
+  return false;
+}
+
+all.onclick = function() {
+  newSchools.className = '';
+  consortiumSchools.className = '';
+  cteSchools.className = '';
+  allGirlsSchools.className = '';
+  internationalSchools.className = '';
+  specializedSchools.className = '';
+  nycPTechSchools.className = '';
+  allBoysSchools = '';
+  this.className = 'active';
+  map.featureLayer.setFilter(function(f) {
+      // Returning true for all markers shows everything.
+      return true;
+  });
+  return false;
+};
