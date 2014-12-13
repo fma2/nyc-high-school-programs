@@ -3,7 +3,7 @@ L.mapbox.accessToken = 'pk.eyJ1IjoiZm1hMiIsImEiOiJkcmdtd0NjIn0.dw0I__cIjfXpz37Yj
 
 
 //Place map
-var map = L.mapbox.map('map', 'examples.map-zr0njcqy').setView([40.78,-73.94], 11);
+var map = L.mapbox.map('map', 'fma2.keb4h838').setView([40.78,-73.94], 11);
 
 //Place markers
 $(document).ready(function() {
@@ -35,14 +35,40 @@ map.featureLayer.on('layeradd', function(e) {
   });
 })
 
-//Add MarkerClusterer - sample code
-L.mapbox.featureLayer('examples.map-h61e8o8e').on('ready', function(e) {
-  var clusterGroup = new L.MarkerClusterGroup();
-    e.target.eachLayer(function(layer) {
-        clusterGroup.addLayer(layer);
-    });
-    map.addLayer(clusterGroup);
-})
+//Add MarkerClusterer
+$(document).ready(function() {
+  $.ajax({
+    dataType: 'json',
+    url: '/',
+    type: 'GET'
+  }).success(function(data) {  
+      var markers = new L.MarkerClusterGroup();
+      for (var i = 0; i< data.length; i++) {
+        var schoolData = data[i], schoolProperties = schoolData.properties, title = schoolProperties.name;
+        var popupContent = '<div class="popup">' + 
+                  '<h3>' + schoolProperties.name + '</h3>' +
+                  '<p>' + schoolProperties.address + ', ' + schoolProperties.zip + '</p>' +
+                  '<p>Grades: '+ schoolProperties.grade_span_min + ' to ' + schoolProperties.grade_span_max + '</p>'
+                     '<p>'+'</p>'
+                  '<p>'+'</p>'
+                  '<p>'+'</p>'
+
+                  '</div>'
+        var marker = L.marker(
+          new L.LatLng(schoolData.geometry.coordinates[1], schoolData.geometry.coordinates[0]), {
+          icon: L.mapbox.marker.icon({'marker-color': '0044FF'}),
+          title: title,
+
+        });
+        marker.bindPopup(popupContent, {
+          closeButton: false, 
+          minWidth: 320
+        });
+        markers.addLayer(marker);
+      }
+      map.addLayer(markers)
+    })
+  });
 
 
 //Filter sidebar
