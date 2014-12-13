@@ -5,6 +5,7 @@ L.mapbox.accessToken = 'pk.eyJ1IjoiZm1hMiIsImEiOiJkcmdtd0NjIn0.dw0I__cIjfXpz37Yj
 //Place map
 var map = L.mapbox.map('map', 'fma2.keb4h838').setView([40.78,-73.94], 11);
 
+
 //Place markers
 $(document).ready(function() {
   $.ajax({
@@ -34,6 +35,31 @@ map.featureLayer.on('layeradd', function(e) {
     minWidth: 320
   });
 })
+
+//Add Marker list on right
+var markerList = document.getElementById('marker-list');
+map.featureLayer.on('layeradd', function(e) {
+    map.featureLayer.eachLayer(function(layer) {
+        var item = markerList.appendChild(document.createElement('li'));
+        item.innerHTML = layer.toGeoJSON().properties.name;
+        item.onclick = function() {
+           map.setView(layer.getLatLng(), 14);
+           layer.openPopup();
+        };
+    });
+});
+
+var output = document.getElementById('output');
+// Initialize the geocoder control and add it to the map.
+var geocoderControl = L.mapbox.geocoderControl('mapbox.places-v1');
+geocoderControl.addTo(map);
+
+// Listen for the `found` result and display the first result
+// in the output container. For all available events, see
+// https://www.mapbox.com/mapbox.js/api/v2.1.4/l-mapbox-geocodercontrol/#section-geocodercontrol-on
+geocoderControl.on('found', function(res) {
+    output.innerHTML = JSON.stringify(res.results.features[0]);
+});
 
 //Add MarkerClusterer
 $(document).ready(function() {
@@ -69,7 +95,6 @@ $(document).ready(function() {
       map.addLayer(markers)
     })
   });
-
 
 //Filter sidebar
 var newSchools = document.getElementById('filter-new-schools');
