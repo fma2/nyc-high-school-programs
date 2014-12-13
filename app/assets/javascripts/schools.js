@@ -1,54 +1,67 @@
 //Mapbox access token
 L.mapbox.accessToken = 'pk.eyJ1IjoiZm1hMiIsImEiOiJkcmdtd0NjIn0.dw0I__cIjfXpz37Yj0DQmw';
 
+var loader = document.getElementById('loader');
 
 //Place map
 var map = L.mapbox.map('map', 'fma2.keb4h838').setView([40.78,-73.94], 11);
 
+startLoading();
+
+function startLoading() {
+  loader.className = '';
+}
+function finishedLoading() {
+    loader.className = 'done';
+    setTimeout(function() {
+        loader.className = 'hide';
+    }, 1000);
+}
 
 //Place markers
-$(document).ready(function() {
-  $.ajax({
-    dataType: 'json',
-    url: '/',
-    type: 'GET'
-  }).success(function(data) {  
-      map.featureLayer.setGeoJSON(data);
-    })
-  });
+// $(document).ready(function() {
+//   $.ajax({
+//     dataType: 'json',
+//     url: '/',
+//     type: 'GET'
+//   }).success(function(data) {  
+//       map.featureLayer.setGeoJSON(data);
+//     })
+//   });
 
 //Add custom popups for each marker
-map.featureLayer.on('layeradd', function(e) {
-  marker = e.layer;
-  properties = marker.feature.properties;
-  popupContent = '<div class="popup">' + 
-                  '<h3>' + properties.name + '</h3>' +
-                  '<p>' + properties.address + ', ' + properties.zip + '</p>' +
-                  '<p>Grades: '+ properties.grade_span_min + ' to ' + properties.grade_span_max + '</p>'
-                     '<p>'+'</p>'
-                  '<p>'+'</p>'
-                  '<p>'+'</p>'
+// map.featureLayer.on('layeradd', function(e) {
+//   marker = e.layer;
+//   properties = marker.feature.properties;
+//   popupContent = '<div class="popup">' + 
+//                   '<h3>' + properties.name + '</h3>' +
+//                   '<p>' + properties.address + ', ' + properties.zip + '</p>' +
+//                   '<p>Grades: '+ properties.grade_span_min + ' to ' + properties.grade_span_max + '</p>'
+//                      '<p>'+'</p>'
+//                   '<p>'+'</p>'
+//                   '<p>'+'</p>'
 
-                  '</div>'
-  marker.bindPopup(popupContent, {
-    closeButton: false, 
-    minWidth: 320
-  });
-})
+//                   '</div>'
+//   marker.bindPopup(popupContent, {
+//     closeButton: false, 
+//     minWidth: 320
+//   });
+// })
 
 //Add Marker list on right
-var markerList = document.getElementById('marker-list');
-map.featureLayer.on('layeradd', function(e) {
-    map.featureLayer.eachLayer(function(layer) {
-        var item = markerList.appendChild(document.createElement('li'));
-        item.innerHTML = layer.toGeoJSON().properties.name;
-        item.onclick = function() {
-           map.setView(layer.getLatLng(), 14);
-           layer.openPopup();
-        };
-    });
-});
+// var markerList = document.getElementById('marker-list');
+// map.featureLayer.on('layeradd', function(e) {
+//     map.featureLayer.eachLayer(function(layer) {
+//         var item = markerList.appendChild(document.createElement('li'));
+//         item.innerHTML = layer.toGeoJSON().properties.name;
+//         item.onclick = function() {
+//            map.setView(layer.getLatLng(), 14);
+//            layer.openPopup();
+//         };
+//     });
+// });
 
+//Geocoder search bar
 var output = document.getElementById('output');
 // Initialize the geocoder control and add it to the map.
 var geocoderControl = L.mapbox.geocoderControl('mapbox.places-v1');
