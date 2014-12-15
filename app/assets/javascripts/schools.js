@@ -117,36 +117,6 @@ $(document).ready(function() {
 })
 
 
-// // Place markers
-// $(document).ready(function() {
-//   $.ajax({
-//     dataType: 'json',
-//     url: '/',
-//     type: 'GET'
-//   }).success(function(data) {  
-//       map.featureLayer.setGeoJSON(data);
-//     })
-//   });
-
-// Add custom popups for each marker
-// map.featureLayer.on('layeradd', function(e) {
-//   marker = e.layer;
-//   properties = marker.feature.properties;
-//   popupContent = '<div class="popup">' + 
-//                   '<h3>' + properties.name + '</h3>' +
-//                   '<p>' + properties.address + ', ' + properties.zip + '</p>' +
-//                   '<p>Grades: '+ properties.grade_span_min + ' to ' + properties.grade_span_max + '</p>'
-//                      '<p>'+'</p>'
-//                   '<p>'+'</p>'
-//                   '<p>'+'</p>'
-
-//                   '</div>'
-//   marker.bindPopup(popupContent, {
-//     closeButton: false, 
-//     minWidth: 320
-//   });
-// })
-
 //Add Marker list on right
 // var markerList = document.getElementById('marker-list');
 // map.featureLayer.on('layeradd', function(e) {
