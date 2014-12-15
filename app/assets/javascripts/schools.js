@@ -29,7 +29,7 @@ $(document).ready(function() {
     featureLayer.eachLayer(function(layer) {
       clusterGroup.addLayer(layer);
     })
-    map.addLayer(clusterGroup);
+    // map.addLayer(clusterGroup);
 
     var typesObj = {}, types = [];
 
@@ -68,20 +68,15 @@ $(document).ready(function() {
      // This function is called whenever someone clicks on a checkbox and changes
   // the selection of markers to be displayed.
     function update() {
-      console.log("update pressed")
       var enabled = {};
       // Run through each checkbox and record whether it is checked. If it is,
       // add it to the object of types to display, otherwise do not.
       for (var i = 0; i < checkboxes.length; i++) {
-        console.log("checking if checked")
         if (checkboxes[i].checked) enabled[checkboxes[i].id] = true;
-        console.log(checkboxes);
 
       }
       featureLayer.setFilter(function(feature) {
-        // console.log(feature);
         var x = (feature.properties['type'] in enabled)
-        console.log(enabled);
         // console.log("trying to filter");
       // If this symbol is in the list, return true. if not, return false.
       // The 'in' operator in javascript does exactly that: given a string
