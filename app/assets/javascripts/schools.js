@@ -4,21 +4,49 @@ L.mapbox.accessToken = 'pk.eyJ1IjoiZm1hMiIsImEiOiJkcmdtd0NjIn0.dw0I__cIjfXpz37Yj
 var loader = document.getElementById('loader');
 
 //Place map
-var map = L.mapbox.map('map', 'fma2.keb4h838').setView([40.78,-73.94], 11);
+var map = L.mapbox.map('map').setView([40.78, -73.94], 11).addLayer(L.mapbox.tileLayer('fma2.keb4h838'));
 
 startLoading();
 
 function startLoading() {
   loader.className = '';
 }
+
 function finishedLoading() {
-    loader.className = 'done';
-    setTimeout(function() {
-        loader.className = 'hide';
-    }, 1000);
+  loader.className = 'done';
+  setTimeout(function() {
+    loader.className = 'hide';
+  }, 1000);
 }
 
-//Place markers
+$(document).ready(function() {
+  $.ajax({
+    dataType: 'json',
+    url: '/',
+    type: 'GET'
+  }).success(function(data) {
+    var featureLayer = L.mapbox.featureLayer(data)
+    var clusterGroup = new L.MarkerClusterGroup({});
+    featureLayer.eachLayer(function(layer) {
+      clusterGroup.addLayer(layer);
+    })
+    map.addLayer(clusterGroup);
+    clusterGroup.eachLayer(function(marker) {
+      var properties = marker.feature.properties
+      popupContent = '<div class="popup">' +
+      '<h3>' + properties.name + '</h3>' +
+      '<p>' + properties.address + ', ' + properties.zip + '</p>' +
+      '<p>Grades: ' + properties.grade_span_min + ' to ' + properties.grade_span_max + '</p>' +
+      '</div>'
+      marker.bindPopup(popupContent, {
+        closeButton: false,
+        minWidth: 320
+      });
+    })
+  })
+})
+
+// // Place markers
 // $(document).ready(function() {
 //   $.ajax({
 //     dataType: 'json',
@@ -29,7 +57,7 @@ function finishedLoading() {
 //     })
 //   });
 
-//Add custom popups for each marker
+// Add custom popups for each marker
 // map.featureLayer.on('layeradd', function(e) {
 //   marker = e.layer;
 //   properties = marker.feature.properties;
@@ -64,50 +92,44 @@ function finishedLoading() {
 //Geocoder search bar
 var output = document.getElementById('output');
 // Initialize the geocoder control and add it to the map.
-var geocoderControl = L.mapbox.geocoderControl('mapbox.places-v1');
+var geocoderControl = L.mapbox.geocoderControl('mapbox.places-v1', {
+  autocomplete: true
+});
 geocoderControl.addTo(map);
 
-// Listen for the `found` result and display the first result
-// in the output container. For all available events, see
-// https://www.mapbox.com/mapbox.js/api/v2.1.4/l-mapbox-geocodercontrol/#section-geocodercontrol-on
-geocoderControl.on('found', function(res) {
-    output.innerHTML = JSON.stringify(res.results.features[0]);
-});
-
 //Add MarkerClusterer
-$(document).ready(function() {
-  $.ajax({
-    dataType: 'json',
-    url: '/',
-    type: 'GET'
-  }).success(function(data) {  
-      var markers = new L.MarkerClusterGroup();
-      for (var i = 0; i< data.length; i++) {
-        var schoolData = data[i], schoolProperties = schoolData.properties, title = schoolProperties.name;
-        var popupContent = '<div class="popup">' + 
-                  '<h3>' + schoolProperties.name + '</h3>' +
-                  '<p>' + schoolProperties.address + ', ' + schoolProperties.zip + '</p>' +
-                  '<p>Grades: '+ schoolProperties.grade_span_min + ' to ' + schoolProperties.grade_span_max + '</p>'
-                     '<p>'+'</p>'
-                  '<p>'+'</p>'
-                  '<p>'+'</p>'
-
-                  '</div>'
-        var marker = L.marker(
-          new L.LatLng(schoolData.geometry.coordinates[1], schoolData.geometry.coordinates[0]), {
-          icon: L.mapbox.marker.icon({'marker-color': '0044FF'}),
-          title: title,
-
-        });
-        marker.bindPopup(popupContent, {
-          closeButton: false, 
-          minWidth: 320
-        });
-        markers.addLayer(marker);
-      }
-      map.addLayer(markers)
-    })
-  });
+// $(document).ready(function() {
+//     $.ajax({
+//         dataType: 'json',
+//         url: '/',
+//         type: 'GET'
+//     }).success(function(data) {
+//         var markers = new L.MarkerClusterGroup();
+//         for (var i = 0; i < data.length; i++) {
+//             var schoolData = data[i],
+//                 schoolProperties = schoolData.properties,
+//                 title = schoolProperties.name;
+//             var popupContent = '<div class="popup">' +
+//                 '<h3>' + schoolProperties.name + '</h3>' +
+//                 '<p>' + schoolProperties.address + ', ' + schoolProperties.zip + '</p>' +
+//                 '<p>Grades: ' + schoolProperties.grade_span_min + ' to ' + schoolProperties.grade_span_max + '</p>' +
+//                 '</div>'
+//             var marker = L.marker(
+//                 new L.LatLng(schoolData.geometry.coordinates[1], schoolData.geometry.coordinates[0]), {
+//                     icon: L.mapbox.marker.icon({
+//                         'marker-color': '0044FF'
+//                     }),
+//                     title: title,
+//                 });
+//             marker.bindPopup(popupContent, {
+//                 closeButton: false,
+//                 minWidth: 320
+//             });
+//             markers.addLayer(marker);
+//         }
+//         map.addLayer(markers)
+//     })
+// });
 
 //Filter sidebar
 var newSchools = document.getElementById('filter-new-schools');
@@ -131,25 +153,25 @@ newSchools.onclick = function(e) {
   all.className = '';
 
   this.className = 'active';
-  // The setFilter function takes a GeoJSON feature object
-  // and returns true to show it or false to hide it.
-  map.featureLayer.setFilter(function(f) {
-    return f.properties['type'] === 'New School';
-  });
-  return false;
-};
+    // The setFilter function takes a GeoJSON feature object
+    // and returns true to show it or false to hide it.
+    map.featureLayer.setFilter(function(f) {
+      return f.properties['type'] === 'New School';
+    });
+    return false;
+  };
 
-consortiumSchools.onclick = function(e) {
-  newSchools.className = '';
-  cteSchools.className = '';
-  allGirlsSchools.className = '';
-  internationalSchools.className = '';
-  specializedSchools.className = '';
-  nycPTechSchools.className = '';
-  allBoysSchools.className = '';
-  all.className = '';
-  
-  this.className = 'active';
+  consortiumSchools.onclick = function(e) {
+    newSchools.className = '';
+    cteSchools.className = '';
+    allGirlsSchools.className = '';
+    internationalSchools.className = '';
+    specializedSchools.className = '';
+    nycPTechSchools.className = '';
+    allBoysSchools.className = '';
+    all.className = '';
+
+    this.className = 'active';
   // The setFilter function takes a GeoJSON feature object
   // and returns true to show it or false to hide it.
   map.featureLayer.setFilter(function(f) {
@@ -167,7 +189,7 @@ cteSchools.onclick = function(e) {
   nycPTechSchools.className = '';
   allBoysSchools.className = '';
   all.className = '';
-  
+
   this.className = 'active';
   map.featureLayer.setFilter(function(f) {
     return f.properties['type'] === 'CTE School';
@@ -184,7 +206,7 @@ allGirlsSchools.onclick = function(e) {
   nycPTechSchools.className = '';
   allBoysSchools.className = '';
   all.className = '';
-  
+
   this.className = 'active';
   map.featureLayer.setFilter(function(f) {
     return f.properties['type'] === 'All-Girls School';
@@ -201,7 +223,7 @@ internationalSchools.onclick = function(e) {
   nycPTechSchools.className = '';
   allBoysSchools.className = '';
   all.className = '';
-  
+
   this.className = 'active';
   map.featureLayer.setFilter(function(f) {
     return f.properties['type'] === 'International School';
@@ -218,7 +240,7 @@ specializedSchools.onclick = function(e) {
   nycPTechSchools.className = '';
   allBoysSchools.className = '';
   all.className = '';
-  
+
   this.className = 'active';
   map.featureLayer.setFilter(function(f) {
     return f.properties['type'] === 'Specialized School';
@@ -235,7 +257,7 @@ nycPTechSchools.onclick = function(e) {
   specializedSchools.className = '';
   allBoysSchools.className = '';
   all.className = '';
-  
+
   this.className = 'active';
   map.featureLayer.setFilter(function(f) {
     return f.properties['type'] === 'NYC P-Tech 9-14, New School';
@@ -253,7 +275,7 @@ allBoysSchools.onclick = function(e) {
   specializedSchools.className = '';
   nycPTechSchools.className = '';
   all.className = '';
-  
+
   this.className = 'active';
   map.featureLayer.setFilter(function(f) {
     return f.properties['type'] === 'All-Boys School';
@@ -274,6 +296,6 @@ all.onclick = function() {
   map.featureLayer.setFilter(function(f) {
       // Returning true for all markers shows everything.
       return true;
-  });
+    });
   return false;
 };
