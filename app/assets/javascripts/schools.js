@@ -168,40 +168,6 @@ var geocoderControl = L.mapbox.geocoderControl('mapbox.places-v1', {
 });
 geocoderControl.addTo(map);
 
-//Add MarkerClusterer
-// $(document).ready(function() {
-//     $.ajax({
-//         dataType: 'json',
-//         url: '/',
-//         type: 'GET'
-//     }).success(function(data) {
-//         var markers = new L.MarkerClusterGroup();
-//         for (var i = 0; i < data.length; i++) {
-//             var schoolData = data[i],
-//                 schoolProperties = schoolData.properties,
-//                 title = schoolProperties.name;
-//             var popupContent = '<div class="popup">' +
-//                 '<h3>' + schoolProperties.name + '</h3>' +
-//                 '<p>' + schoolProperties.address + ', ' + schoolProperties.zip + '</p>' +
-//                 '<p>Grades: ' + schoolProperties.grade_span_min + ' to ' + schoolProperties.grade_span_max + '</p>' +
-//                 '</div>'
-//             var marker = L.marker(
-//                 new L.LatLng(schoolData.geometry.coordinates[1], schoolData.geometry.coordinates[0]), {
-//                     icon: L.mapbox.marker.icon({
-//                         'marker-color': '0044FF'
-//                     }),
-//                     title: title,
-//                 });
-//             marker.bindPopup(popupContent, {
-//                 closeButton: false,
-//                 minWidth: 320
-//             });
-//             markers.addLayer(marker);
-//         }
-//         map.addLayer(markers)
-//     })
-// });
-
 //Filter sidebar
 var newSchools = document.getElementById('filter-new-schools');
 var consortiumSchools = document.getElementById('filter-consortium-schools');
