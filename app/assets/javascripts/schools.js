@@ -53,11 +53,12 @@ $(document).ready(function() {
     for (var i = 0; i < types.length; i++) {
     // Create an an input checkbox and label inside.
       var item = filters.appendChild(document.createElement('div'));
-      var checkbox = item.appendChild(document.createElement('input'));
-      var label = item.appendChild(document.createElement('label'));
+      var listItem = item.appendChild(document.createElement('li'));
+      var checkbox = listItem.appendChild(document.createElement('input'));
+      var label = listItem.appendChild(document.createElement('label'));
       checkbox.type = 'checkbox';
       checkbox.id = types[i];
-      checkbox.checked = true;
+      checkbox.checked = false;
       // create a label to the right of the checkbox with explanatory text
       label.innerHTML = types[i];
       label.setAttribute('for', types[i]);
