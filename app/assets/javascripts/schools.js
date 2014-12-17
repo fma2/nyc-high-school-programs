@@ -12,7 +12,7 @@ function finishedLoading() {
   }, 1000);
 }
 //Place map
-var map = L.mapbox.map('map').setView([40.78, -73.94], 11).addLayer(L.mapbox.tileLayer('fma2.keb4h838'));
+var map = L.mapbox.map('map').setView([40.78, -73.94], 11).addLayer(L.mapbox.tileLayer('fma2.kgkm6i0a'));
 
 startLoading();
 
