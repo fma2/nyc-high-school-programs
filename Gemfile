@@ -43,5 +43,3 @@ gem 'gon'
 gem 'foundation-rails'
 
 gem 'pg_search'
-
-gem 'unicorn'
