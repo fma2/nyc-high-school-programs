@@ -28,25 +28,6 @@
 	top:10px
 }
 
-pre.ui-output {
-  display:block;
-  position:absolute;
-  bottom:10px;
-  left:10px;
-  padding:5px 10px;
-  background:rgba(0,0,0,0.5);
-  color:#fff;
-  font-size:11px;
-  line-height:18px;
-  border-radius:3px;
-  max-height:50%;
-  max-width:25%;
-  overflow:auto;
-  word-wrap: break-word;
-  white-space:pre-wrap;
-  }
-  pre.ui-output:empty { padding:0; }
-
 .filter-ui {
   background:#fff;
   position:absolute;
@@ -56,3 +37,7 @@ pre.ui-output {
   padding:10px;
   border-radius:3px;
   }
+
+#menu {
+  left: 20px;
+}
