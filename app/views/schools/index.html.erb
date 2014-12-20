@@ -1,14 +1,32 @@
 <div id='loader'><span class='message'>loading</span></div>
-<form class="search-form">
-	<input class="search-field" type="text" />
-</form>
 
-<nav id='menu-ui' class='menu-ui'>
-	<ul id='filters' class='side-nav'></ul>
-</nav>
+<!-- <div class='col12 pad4 contain fill-navy dark clip'> -->
+	
+	<form class="search-form">
+		<fieldset class='with-icon'>
+			<span class='icon search'></span>
+			<input type='text' value='' />
+		</fieldset>
+	</form>
 
-<div id="map"></div>
+	<div class='center quiet'>
+		<div id="map"></div>
+	</div>
+	<div class='pin-right pad2'>
+    <a href='#menu' class='button stroke'>Menu</a>
+  </div>
+	<div id='menu' class='col4 pad2 fill-darken1 pin-left offcanvas-left'>
+	
+		<input type='button' id='programs' class='button stroke loud' value='Add programs' name='programs'/>
+		<ul id='filters' class='side-nav'></ul>
 
-<pre id='output' class='ui-output'></pre>
-<!-- <ul id='marker-list'></ul> -->
-<input type='button' id='programs' class='button' value='Add programs' name='programs' />
+		<pre id='output' class='ui-output'></pre>
+
+	</div>
+<!-- </div> -->
+
+
+
+
+
+
