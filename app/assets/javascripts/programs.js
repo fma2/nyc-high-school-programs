@@ -1,4 +1,4 @@
-var programsButton = document.getElementById('programs');
+var programsButton = document.getElementById('programsToggle');
 programsButton.onclick = function(e) {
   $.ajax({
     dataType: 'json',
