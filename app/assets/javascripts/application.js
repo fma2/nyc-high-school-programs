@@ -20,6 +20,8 @@
 $(function(){ $(document).foundation(); });
 
 var loader = document.getElementById('loader');
+startLoading();
+finishedLoading();
 function startLoading() {
   loader.className = '';
 }
@@ -30,4 +32,3 @@ function finishedLoading() {
   }, 1000);
 }
 
-startLoading();
