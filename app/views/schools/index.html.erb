@@ -1,37 +1,40 @@
 <div id='loader'><span class='message'>loading</span></div>
 
 <!-- <div class='col12 pad4 contain fill-navy dark clip'> -->
-	
-	<form class="search-form">
-		<fieldset class='with-icon'>
-			<span class='icon search'></span>
-			<input type='text' value='' />
-		</fieldset>
-	</form>
 
-	<div class='center quiet'>
-		<div id="map"></div>
+<form class="search-form">
+	<fieldset class='with-icon'>
+		<span class='icon search'></span>
+		<input type='text' value='' />
+	</fieldset>
+</form>
+
+<div class='center quiet'>
+	<div id="map"></div>
+</div>
+
+<div class='pin-right pad2'>
+	<a href='#menu' class='button stroke'>Menu</a>
+</div>
+
+<div id='menu' class='col5 pad2 fill-darken2 pin-left offcanvas-left'>
+	<h1 class='fancy'>visualize-HS</h1>	
+	<br>
+	<br>
+	<br>
+	<div class='rounded-toggle inline'>
+		<a href="/" class='icon home'></a>
+		<input id='typesToggle' type='radio' name='rtoggle' value='types' checked='checked'>
+		<label for='typesToggle'>filter by school types</label>
+		<input id='programsToggle' type='radio' name='rtoggle' value='programs'>
+		<label for='programsToggle'>filter by programs</label>
+		<input id='visualizationsToggle' type='radio' name='rtoggle' value='visualizations'>
+		<label for='visualizationsToggle'>fun visualizations</label>
 	</div>
-	<div class='pin-right pad2'>
-    <a href='#menu' class='button stroke'>Menu</a>
-  </div>
-	<div id='menu' class='col5 pad2 fill-darken2 pin-left offcanvas-left'>
-		<h2 class='fancy'>visualize-HS</h2>
-		<div class='rounded-toggle inline'>
-			<input id='types' type='radio' name='rtoggle' value='types' checked='checked'>
-  		<label for='types'>filter by school types</label>
-  		<input id='programs' type='radio' name='rtoggle' value='programs'>
-  		<label for='programs'>filter by programs</label>
-  		<input id='visualizations' type='radio' name='rtoggle' value='visualizations'>
-  		<label for='visualizations'>fun visualizations</label>
-		</div>
+	<!-- <input type='button' id='programs' class='button stroke loud' value='Add programs' name='programs'/> -->
+	<div id='filters'></div>
 
-		<!-- <input type='button' id='programs' class='button stroke loud' value='Add programs' name='programs'/> -->
-		<div id='filters' class='side-nav'></div>
-		<pre id='output' class='ui-output'></pre>
-	
-
-	</div>
+</div>
 <!-- </div> -->
 
 
