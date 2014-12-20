@@ -12,10 +12,14 @@ var filters = document.getElementById('filters');
 var all = document.getElementById('listToggle')
 all.onclick = function(e) {
   $(".search-form").show();
+  $("#typesList").hide();
+
   var item = filters.appendChild(document.createElement('div'));
-  var markerList = item.appendChild(document.createElement('ul'));
-  markerList.setAttribute('id', 'allMarkers')
-  item.setAttribute('class', 'pill');
+  item.setAttribute('id', 'allMarkers')
+
+  var markerList = item.appendChild(document.createElement('div'));
+  markerList.setAttribute('class', 'pill');
+  $("#allMarkers").show();
   $.ajax({
     dataType: 'json',
     url: '/',
@@ -42,7 +46,8 @@ all.onclick = function(e) {
     })
 
     featureLayer.eachLayer(function(layer) {
-      var item = markerList.appendChild(document.createElement('li'));
+      var item = markerList.appendChild(document.createElement('a'));
+      item.setAttribute('class', 'col11 button');
       item.innerHTML = layer.toGeoJSON().properties.name;
       item.onclick = function() {
        map.setView(layer.getLatLng(), 16);
@@ -85,14 +90,22 @@ types.onclick = function(e) {
     })
     for (var k in typesObj) types.push(k);
       var checkboxes = [];
+
+    // var item = filters.appendChild(document.createElement('div'));
+    // item.setAttribute('class', 'pill');
+
     var item = filters.appendChild(document.createElement('div'));
-    item.setAttribute('class', 'pill');
+    item.setAttribute('id', 'typesList')
+
+    var typesList = item.appendChild(document.createElement('div'));
+    typesList.setAttribute('class', 'pill');
+    $("#typesList").show();
 
     // var typesList = item.appendChild(document.createElement('div'));
 
     for (var i = 0; i < types.length; i++) {
     // Create an an input checkbox and label inside.
-    var listItem = item.appendChild(document.createElement('a'));
+    var listItem = typesList.appendChild(document.createElement('a'));
     listItem.setAttribute('class', 'col12 button');
 
     var checkbox = listItem.appendChild(document.createElement('input'));
