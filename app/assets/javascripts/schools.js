@@ -6,7 +6,7 @@ L.mapbox.accessToken = 'pk.eyJ1IjoiZm1hMiIsImEiOiJkcmdtd0NjIn0.dw0I__cIjfXpz37Yj
 var map = L.mapbox.map('map').setView([40.78, -73.94], 11).addLayer(L.mapbox.tileLayer('fma2.kgkm6i0a'));
 
 var filters = document.getElementById('filters');
-
+var types = document.getElementById('typesToggle')
 
 $(document).ready(function() {
   $.ajax({
@@ -108,7 +108,7 @@ $(document).ready(function() {
   })
 })
 
-//Add Marker list on right
+// Add Marker list on right
 // var markerList = document.getElementById('marker-list');
 // map.featureLayer.on('layeradd', function(e) {
 //     map.featureLayer.eachLayer(function(layer) {
