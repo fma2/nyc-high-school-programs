@@ -1,24 +1,65 @@
 //Mapbox access token
 L.mapbox.accessToken = 'pk.eyJ1IjoiZm1hMiIsImEiOiJkcmdtd0NjIn0.dw0I__cIjfXpz37Yj0DQmw';
 
-var loader = document.getElementById('loader');
-function startLoading() {
-  loader.className = '';
-}
-function finishedLoading() {
-  loader.className = 'done';
-  setTimeout(function() {
-    loader.className = 'hide';
-  }, 1000);
-}
+
 //Place map
 var map = L.mapbox.map('map').setView([40.78, -73.94], 11).addLayer(L.mapbox.tileLayer('fma2.kgkm6i0a'));
-
-startLoading();
-
+$(".search-form").hide();
 var filters = document.getElementById('filters');
 
-$(document).ready(function() {
+
+//Marker list toggle
+var all = document.getElementById('listToggle')
+all.onclick = function(e) {
+  $(".search-form").show();
+  $("#typesList").hide();
+
+  var item = filters.appendChild(document.createElement('div'));
+  item.setAttribute('id', 'allMarkers')
+
+  var markerList = item.appendChild(document.createElement('div'));
+  markerList.setAttribute('class', 'pill');
+  $("#allMarkers").show();
+  $.ajax({
+    dataType: 'json',
+    url: '/',
+    type: 'GET'
+  }).success(function(data){
+    var featureLayer = L.mapbox.featureLayer(data)
+    var clusterGroup = new L.MarkerClusterGroup();
+    featureLayer.eachLayer(function(layer) {
+      clusterGroup.addLayer(layer);
+    })
+    map.addLayer(clusterGroup);
+    clusterGroup.eachLayer(function(marker) {
+      var properties = marker.feature.properties
+      popupContent = '<div class="popup">' +
+      '<h3>' + properties.name + '</h3>' +
+      '<p>' + properties.address + ', ' + properties.zip + '</p>' +
+      '<p>Grades: ' + properties.grade_span_min + ' to ' + properties.grade_span_max + '</p>' +
+      '<p>Type: ' + properties.type + '</p>' +
+      '</div>'
+      marker.bindPopup(popupContent, {
+        closeButton: false,
+        minWidth: 320
+      });
+    })
+
+    featureLayer.eachLayer(function(layer) {
+      var item = markerList.appendChild(document.createElement('a'));
+      item.setAttribute('class', 'col11 button');
+      item.innerHTML = layer.toGeoJSON().properties.name;
+      item.onclick = function() {
+       map.setView(layer.getLatLng(), 16);
+       layer.openPopup();
+     };
+   });
+  });
+}
+var types = document.getElementById('typesToggle')
+types.onclick = function(e) {
+  $("#allMarkers").hide();
+  $(".search-form").hide();
   $.ajax({
     dataType: 'json',
     url: '/',
@@ -29,8 +70,7 @@ $(document).ready(function() {
     featureLayer.eachLayer(function(layer) {
       clusterGroup.addLayer(layer);
     })
-    // map.addLayer(clusterGroup);
-
+      // map.addLayer(clusterGroup);
     var typesObj = {}, types = [];
 
     clusterGroup.eachLayer(function(marker) {
@@ -49,16 +89,30 @@ $(document).ready(function() {
       typesObj[feature.properties['type']] = true;
     })
     for (var k in typesObj) types.push(k);
-    var checkboxes = [];
+      var checkboxes = [];
+
+    // var item = filters.appendChild(document.createElement('div'));
+    // item.setAttribute('class', 'pill');
+
+    var item = filters.appendChild(document.createElement('div'));
+    item.setAttribute('id', 'typesList')
+
+    var typesList = item.appendChild(document.createElement('div'));
+    typesList.setAttribute('class', 'pill');
+    $("#typesList").show();
+
+    // var typesList = item.appendChild(document.createElement('div'));
+
     for (var i = 0; i < types.length; i++) {
     // Create an an input checkbox and label inside.
-      var item = filters.appendChild(document.createElement('div'));
-      var listItem = item.appendChild(document.createElement('li'));
-      var checkbox = listItem.appendChild(document.createElement('input'));
-      var label = listItem.appendChild(document.createElement('label'));
-      checkbox.type = 'checkbox';
-      checkbox.id = types[i];
-      checkbox.checked = false;
+    var listItem = typesList.appendChild(document.createElement('a'));
+    listItem.setAttribute('class', 'col12 button');
+
+    var checkbox = listItem.appendChild(document.createElement('input'));
+    var label = listItem.appendChild(document.createElement('label'));
+    checkbox.type = 'checkbox';
+    checkbox.id = types[i];
+    checkbox.checked = false;
       // create a label to the right of the checkbox with explanatory text
       label.innerHTML = types[i];
       label.setAttribute('for', types[i]);
@@ -72,10 +126,9 @@ $(document).ready(function() {
       var enabled = {};
       // Run through each checkbox and record whether it is checked. If it is,
       // add it to the object of types to display, otherwise do not.
-      for (var i = 0; i < checkboxes.length; i++) {
-        if (checkboxes[i].checked) enabled[checkboxes[i].id] = true;
-
-      }
+       for (var i = 0; i < checkboxes.length; i++) {
+          if (checkboxes[i].checked) enabled[checkboxes[i].id] = true;
+        }
       featureLayer.setFilter(function(feature) {
         var x = (feature.properties['type'] in enabled)
         // console.log("trying to filter");
@@ -96,11 +149,11 @@ $(document).ready(function() {
       clusterGroup.eachLayer(function(marker) {
         var properties = marker.feature.properties
         popupContent = '<div class="popup">' +
-                      '<h3>' + properties.name + '</h3>' +
-                      '<p>' + properties.address + ', ' + properties.zip + '</p>' +
-                      '<p>Grades: ' + properties.grade_span_min + ' to ' + properties.grade_span_max + '</p>' +
-                      '<p>Type: ' + properties.type + '</p>' +
-                      '</div>'
+        '<h3>' + properties.name + '</h3>' +
+        '<p>' + properties.address + ', ' + properties.zip + '</p>' +
+        '<p>Grades: ' + properties.grade_span_min + ' to ' + properties.grade_span_max + '</p>' +
+        '<p>Type: ' + properties.type + '</p>' +
+        '</div>'
         marker.bindPopup(popupContent, {
           closeButton: false,
           minWidth: 320
@@ -110,25 +163,14 @@ $(document).ready(function() {
       })
     }
   })
-})
-
-//Add Marker list on right
-// var markerList = document.getElementById('marker-list');
-// map.featureLayer.on('layeradd', function(e) {
-//     map.featureLayer.eachLayer(function(layer) {
-//         var item = markerList.appendChild(document.createElement('li'));
-//         item.innerHTML = layer.toGeoJSON().properties.name;
-//         item.onclick = function() {
-//            map.setView(layer.getLatLng(), 14);
-//            layer.openPopup();
-//         };
-//     });
-// });
+}
 
 //Geocoder search bar
-var output = document.getElementById('output');
-// Initialize the geocoder control and add it to the map.
-var geocoderControl = L.mapbox.geocoderControl('mapbox.places-v1', {
-  autocomplete: true
-});
-geocoderControl.addTo(map);
+// var output = document.getElementById('output');
+// // Initialize the geocoder control and add it to the map.
+// var geocoderControl = L.mapbox.geocoderControl('mapbox.places-v1', {
+//   autocomplete: true
+// });
+// geocoderControl.addTo(map);
+
+
