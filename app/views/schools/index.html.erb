@@ -15,10 +15,19 @@
 	<div class='pin-right pad2'>
     <a href='#menu' class='button stroke'>Menu</a>
   </div>
-	<div id='menu' class='col4 pad2 fill-darken1 pin-left offcanvas-left'>
-	
-		<input type='button' id='programs' class='button stroke loud' value='Add programs' name='programs'/>
-		<ul id='filters' class='side-nav'></ul>
+	<div id='menu' class='col5 pad2 fill-darken2 pin-left offcanvas-left'>
+		<h2 class='fancy'>visualize-HS</h2>
+		<div class='rounded-toggle inline'>
+			<input id='types' type='radio' name='rtoggle' value='types' checked='checked'>
+  		<label for='types'>Filter by school types</label>
+  		<input id='programs' type='radio' name='rtoggle' value='programs'>
+  		<label for='programs'>Filter by programs</label>
+  		<input id='visualizations' type='radio' name='rtoggle' value='visualizations'>
+  		<label for='visualizations'>Fun visualizations</label>
+		</div>
+
+		<!-- <input type='button' id='programs' class='button stroke loud' value='Add programs' name='programs'/> -->
+		<div id='filters' class='side-nav'></div>
 
 		<pre id='output' class='ui-output'></pre>
 
