@@ -7,6 +7,7 @@ var map = L.mapbox.map('map').setView([40.78, -73.94], 11).addLayer(L.mapbox.til
 
 var filters = document.getElementById('filters');
 
+
 $(document).ready(function() {
   $.ajax({
     dataType: 'json',
