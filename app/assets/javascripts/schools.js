@@ -40,10 +40,16 @@ $(document).ready(function() {
     })
     for (var k in typesObj) types.push(k);
     var checkboxes = [];
+    var item = filters.appendChild(document.createElement('div'));
+    item.setAttribute('class', 'pill');
+
+    // var typesList = item.appendChild(document.createElement('div'));
+
     for (var i = 0; i < types.length; i++) {
     // Create an an input checkbox and label inside.
-      var item = filters.appendChild(document.createElement('div'));
-      var listItem = item.appendChild(document.createElement('li'));
+      var listItem = item.appendChild(document.createElement('a'));
+      listItem.setAttribute('class', 'col12 button');
+
       var checkbox = listItem.appendChild(document.createElement('input'));
       var label = listItem.appendChild(document.createElement('label'));
       checkbox.type = 'checkbox';
