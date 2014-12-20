@@ -29,6 +29,6 @@ function finishedLoading() {
   loader.className = 'done';
   setTimeout(function() {
     loader.className = 'hide';
-  }, 1000);
+  }, 5000);
 }
 
