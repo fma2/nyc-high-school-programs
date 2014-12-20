@@ -108,19 +108,6 @@ $(document).ready(function() {
   })
 })
 
-//Add Marker list on right
-// var markerList = document.getElementById('marker-list');
-// map.featureLayer.on('layeradd', function(e) {
-//     map.featureLayer.eachLayer(function(layer) {
-//         var item = markerList.appendChild(document.createElement('li'));
-//         item.innerHTML = layer.toGeoJSON().properties.name;
-//         item.onclick = function() {
-//            map.setView(layer.getLatLng(), 14);
-//            layer.openPopup();
-//         };
-//     });
-// });
-
 //Geocoder search bar
 var output = document.getElementById('output');
 // Initialize the geocoder control and add it to the map.
