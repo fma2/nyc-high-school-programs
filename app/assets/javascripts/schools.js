@@ -1,20 +1,9 @@
 //Mapbox access token
 L.mapbox.accessToken = 'pk.eyJ1IjoiZm1hMiIsImEiOiJkcmdtd0NjIn0.dw0I__cIjfXpz37Yj0DQmw';
 
-var loader = document.getElementById('loader');
-function startLoading() {
-  loader.className = '';
-}
-function finishedLoading() {
-  loader.className = 'done';
-  setTimeout(function() {
-    loader.className = 'hide';
-  }, 1000);
-}
+
 //Place map
 var map = L.mapbox.map('map').setView([40.78, -73.94], 11).addLayer(L.mapbox.tileLayer('fma2.kgkm6i0a'));
-
-startLoading();
 
 var filters = document.getElementById('filters');
 
