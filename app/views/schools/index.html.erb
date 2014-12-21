@@ -9,22 +9,26 @@
 </div>
 
 <div id='menu' class='col5 pad2 fill-darken2 pin-left'>
-	<h1 class='fancy'>visualize-HS</h1>	
-	<br>
-	<br>
-	<br>
+	<div id="top-of-menu">
+		<h1 id="title" class='fancy'>visualize-HS
+		</h1>	
+		<br>
+		<br>
+		<br>
 
-	<div class='rounded-toggle inline'>
-		<a href="/" class='icon home'></a>
-		<input id='listToggle' type='radio' name='rtoggle' value='types' checked='checked'>
-		<label for='listToggle'>all</label>
-		<input id='typesToggle' type='radio' name='rtoggle' value='types'>
-		<label for='typesToggle'>filter by school types</label>
-		<input id='programsToggle' type='radio' name='rtoggle' value='programs'>
-		<label for='programsToggle'>filter by programs</label>
+		<div id="toggle" class='rounded-toggle inline'>
+			<a href="/" class='icon home'></a>
+			<input id='listToggle' type='radio' name='rtoggle' value='types' checked='checked'>
+			<label for='listToggle'>all</label>
+			<input id='typesToggle' type='radio' name='rtoggle' value='types'>
+			<label for='typesToggle'>filter by school types</label>
+			<input id='programsToggle' type='radio' name='rtoggle' value='programs'>
+			<label for='programsToggle'>filter by programs</label>
 <!-- 		<input id='visualizationsToggle' type='radio' name='rtoggle' value='visualizations'>
-		<label for='visualizationsToggle'>fun visualizations</label> -->
-	</div>
+	<label for='visualizationsToggle'>fun visualizations</label> -->
+</div>
+</div>
+<div id='filters'>
 	<form class="search-form">
 		<fieldset class='with-icon'>
 			<span class='icon search'></span>
@@ -32,10 +36,10 @@
 		</fieldset>
 	</form>
 	<!-- <input type='button' id='programs' class='button stroke loud' value='Add programs' name='programs'/> -->
-	<div id='filters'>
-		<div id="markers-list" class="pill"></div>
-		<div id="types-list" class="pill"></div>
-	</div>
+	
+	<div id="markers-list" class="pill"></div>
+	<div id="types-list" class="pill"></div>
+</div>
 
 </div>
 <!-- </div> -->
