@@ -88,7 +88,7 @@ typesToggle.onclick = function(e) {
     for (var i = 0; i < types.length; i++) {
       // Create an an input checkbox and label inside.
       var listItem = typesList.appendChild(document.createElement('a'));
-      listItem.setAttribute('class', 'col12 button');
+      listItem.setAttribute('class', 'col11 button');
 
       var checkbox = listItem.appendChild(document.createElement('input'));
       var label = listItem.appendChild(document.createElement('label'));
