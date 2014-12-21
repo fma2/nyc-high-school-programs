@@ -21,8 +21,6 @@
   display: inline;
 }
 
-
-
 .filter-ui {
   background:#fff;
   position:absolute;
@@ -36,6 +34,17 @@
 #menu {
   left: 20px;
   overflow:auto;
-
 }
 
+a {
+  overflow: auto;
+}
+
+#filters {
+  padding-top: 20px;
+  clear: both;
+}
+
+#top-of-menu {
+  z-index: 2;
+}
