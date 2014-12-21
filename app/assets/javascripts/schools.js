@@ -33,6 +33,7 @@ allSchoolsToggle.onclick = function(e) {
   $("#types-list").hide();
   $(".search-form").show();
   $("#markers-list").show();
+  markerList.innerHTML = '';
   $.ajax({
     dataType: 'json',
     url: '/',
@@ -50,10 +51,10 @@ allSchoolsToggle.onclick = function(e) {
 
 function createAllSchoolsMarkerList(data) {
   data.eachLayer(function(layer) {
-    var item = markerList.appendChild(document.createElement('a'));
-    item.setAttribute('class', 'col11 button');
-    item.innerHTML = layer.toGeoJSON().properties.name;
-    item.onclick = function() {
+    var school = markerList.appendChild(document.createElement('a'));
+    school.setAttribute('class', 'col11 button');
+    school.innerHTML = layer.toGeoJSON().properties.name;
+    school.onclick = function() {
      map.setView(layer.getLatLng(), 16);
      layer.openPopup();
    };
@@ -66,6 +67,8 @@ typesToggle.onclick = function(e) {
   $("#markers-list").hide();
   $(".search-form").hide();
   $("#types-list").show();
+  typesList.innerHTML = '';
+
   $.ajax({
     dataType: 'json',
     url: '/',
