@@ -33,16 +33,28 @@ $.ajax({
 //Displaying of markers methods
 function addMarkerContent(marker) {
   var properties = marker.feature.properties
-  popupContent = '<div class="popup">' +
-  '<h3>' + properties.name + '</h3>' +
-  '<p>' + properties.address + ', ' + properties.zip + '</p>' +
-  '<p>Grades: ' + properties.grade_span_min + ' to ' + properties.grade_span_max + '</p>' +
-  '<p>Type: ' + properties.type + '</p>' +
+  popupContent = 
+  '<div class="popup">' +
+    '<div class="type">' +
+      '<p class="icon book"></p>' +
+    '</div>' +
+    '<div class="info">' +
+      '<h3 class="popup-title">' + properties.name + '</h3>' +
+      '<p class="grades">Grades ' + properties.grade_span_min + ' to ' + properties.grade_span_max + '</p>' +
+      '<p class="address">' + properties.address + ', ' + properties.zip + '</p>' +
+    '</div>' +
+    '<img alt="Right Arrow" class="right-arrow" src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-ios7-arrow-right-128.png">' +
   '</div>'
+  // var modalLink = document.getElementsByClassName('right-arrow');
+  // modalLink.addEventListener('click',openModal);
   marker.bindPopup(popupContent, {
     closeButton: false,
     minWidth: 320
   });
+}
+
+function openModal(){
+  console.log('modal clicked');
 }
 
 function createClusterGroup(data) {
