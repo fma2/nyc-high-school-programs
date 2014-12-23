@@ -3,6 +3,17 @@ class SchoolsController < ApplicationController
 		@schools = School.all
 		@geojson = Array.new
 		@schools.each do |school|
+			@programs = school.programs
+			school_programs = []
+			@programs.each do |program|
+				school_programs << {
+					program_name: program.program_name,
+					interest_area: program.interest_area,
+					selection_method: program.selection_method,
+					selection_method_abbrevi: program.selection_method_abbrevi,
+					urls: program.urls,
+					}
+			end
 			@geojson << {
 				type: 'Feature',
 				geometry: { 
@@ -23,25 +34,25 @@ class SchoolsController < ApplicationController
 					dbn: school.dbn,
 					grade_span_min: school.grade_span_min,
 					grade_span_max: school.grade_span_max,
-					programs: [],
+					ontrack_year1_2013: school.ontrack_year1_2013,
+        	graduation_rate_2013: school.graduation_rate_2013,
+        	college_career_rate_2013: school.college_career_rate_2013,
+        	student_satisfaction_2013: school.student_satisfaction_2013,
+        	ontrack_year1_2012: school.ontrack_year1_2012,
+        	graduation_rate_2012: school.graduation_rate_2012,
+        	student_satisfaction_2012: school.student_satisfaction_2012,
+        	ontrack_year1_historic_avg_similar_schls: school.ontrack_year1_historic_avg_similar_schls,
+        	graduation_rate_historic_avg_similar_schl: school.graduation_rate_historic_avg_similar_schl,
+        	college_career_rate_historic_avg_similar_schls: school.college_career_rate_historic_avg_similar_schls,
+        	student_satisfaction_historic_avg_similar_schls: school.student_satisfaction_historic_avg_similar_schls,
+        	quality_review_rating: school.quality_review_rating,
+        	quality_review_year: school.quality_review_year,
+					programs: school_programs,
 					:'marker-color' => '#00607d',
       		:'marker-symbol' => 'circle',
       		:'marker-size' => 'medium'
 				}
 			}
-			@programs = school.programs
-			@programs.each do |program|
-				programs = @geojson[0][:properties][:programs]
-				program_name = program.program_name
-				programs << {
-					program_name: {
-						interest_area: program.interest_area,
-						selection_method: program.selection_method,
-						selection_method_abbrevi: program.selection_method_abbrevi,
-						urls: program.urls,
-					}
-				}
-			end
 		end
 		respond_to do |format|
 			format.html
