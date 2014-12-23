@@ -29,11 +29,27 @@ high_school_directory_2014_15.each do |school|
 	end
 end
 
-# high_school_performance_2014_15.each do |school|
-# 	school = School.find_by(dbn:school["dbn"])
-# 	if school
-# 		school.update()
-# end
+high_school_performance_2014_15.each do |school|
+	school_to_update = School.find_by(dbn:school["dbn"])
+	if school_to_update
+		school_to_update.update(
+			ontrack_year1_2013: school["ontrack_year1_2013"],
+	   	graduation_rate_2013: school["graduation_rate_2013"],
+			college_career_rate_2013: school["college_career_rate_2013"],
+			student_satisfaction_2013: school["student_satisfaction_2013"],
+			ontrack_year1_2012: school["ontrack_year1_2012"],
+			graduation_rate_2012: school["graduation_rate_2012"],
+			student_satisfaction_2012: school["student_satisfaction_2012"],
+			ontrack_year1_historic_avg_similar_schls: school["ontrack_year1_historic_avg_similar_schls"],
+			graduation_rate_historic_avg_similar_schl: school["graduation_rate_historic_avg_similar_schl"],
+			college_career_rate_historic_avg_similar_schls: school["college_career_rate_historic_avg_similar_schls"],
+			student_satisfaction_historic_avg_similar_schls: school["student_satisfaction_historic_avg_similar_schls"],
+			quality_review_rating: school["quality_review_rating"],
+			quality_review_year: school["quality_review_year"]
+		)
+		school_to_update.save
+	end
+end
 
 high_school_program_data_2014_15.each do |program|
 	school = School.find_by(dbn: program["dbn"])
