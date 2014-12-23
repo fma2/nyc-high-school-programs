@@ -108,7 +108,7 @@ function createClusterGroup(data) {
 function createAllSchoolsMarkerList(data) {
   data.eachLayer(function(layer) {
     var school = markerList.appendChild(document.createElement('a'));
-    school.setAttribute('class', 'col11 button');
+    school.setAttribute('class', 'col6 button quiet');
     school.innerHTML = layer.toGeoJSON().properties.name;
     school.onclick = function() {
      map.setView(layer.getLatLng(), 16);
@@ -209,7 +209,7 @@ function displayFilterList(pageElement, array, field) {
   for (var i = 0; i < array.length; i++) {
     // Create an an input checkbox and label inside.
     listItem = pageElement.appendChild(document.createElement('a'));
-    listItem.setAttribute('class', 'col11 button');
+    listItem.setAttribute('class', 'col4 button quiet');
 
     var checkbox = listItem.appendChild(document.createElement('input'));
     var label = listItem.appendChild(document.createElement('label'));
@@ -253,7 +253,7 @@ function createMarkerList(data) {
   filteredListSection.innerHTML = '';
   data.eachLayer(function(layer) {
     var school = filteredListSection.appendChild(document.createElement('a'));
-    school.setAttribute('class', 'col11 button');
+    school.setAttribute('class', 'col4 quiet button');
     school.innerHTML = layer.toGeoJSON().properties.name;
     school.onclick = function() {
      map.setView(layer.getLatLng(), 16);
@@ -289,7 +289,7 @@ map.on('locationfound', function(e) {
             coordinates: [e.latlng.lng, e.latlng.lat]
         },
         properties: {
-            'title': 'Here I am!',
+            'title': 'You!',
             'marker-color': '#ff8888',
             'marker-symbol': 'star'
         }
