@@ -157,18 +157,11 @@ programsToggle.onclick = function(e) {
   $("#markers-list").hide();
   $("#interest-areas-list").show();
   interestAreasList.innerHTML = '';
-
-  // $.ajax({
-  //   dataType: 'json',
-  //   url: '/programs',
-  //   type: 'GET'
-  // }).success(function(data) {
-    featureLayer = L.mapbox.featureLayer(rawData)
-    clusterGroup = createClusterGroup(featureLayer)
-    
-    var programsAry = createProgramsFilterList(clusterGroup, 'interest_area');
-    displayProgramsFilterList(interestAreasList, programsAry, 'interest_area');
-  // });
+  featureLayer = L.mapbox.featureLayer(rawData)
+  clusterGroup = createClusterGroup(featureLayer)
+  
+  var programsAry = createProgramsFilterList(clusterGroup, 'interest_area');
+  displayProgramsFilterList(interestAreasList, programsAry, 'interest_area');
 }
 
 
@@ -239,8 +232,6 @@ function updateMapbyProgramsFilter(field) {
     for (i=0; i<programsList.length; i++) {
       filterItemObj[programsList[i][field]] = true;      
     }
-    // var feature = marker.feature
-    // filterItemObj[feature.properties[field]] = true;
   })
   createMarkerList(featureLayer)
 }
