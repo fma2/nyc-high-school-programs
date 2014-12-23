@@ -15,7 +15,6 @@ var typesList = document.getElementById('types-list');
 var interestAreasList = document.getElementById('interest-areas-list');
 var clusterGroup, featureLayer;
 var filterItemObj = {}, filterItems = [], checkboxes=[];
-var modalLink;
 
 //Place all school markers on map at load
 $.ajax({
@@ -86,12 +85,6 @@ function addMarkerContent(marker) {
 
 
 }
-
-function openModal(properties){
-  console.log(properties)
-  console.log('modal clicked');
-}
-
 
 function createClusterGroup(data) {
   var clusterGroup = new L.MarkerClusterGroup();
