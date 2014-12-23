@@ -54,9 +54,24 @@ function addModalContent(marker) {
   '<div id="modal-map"></div>' +
   '<h3 class="title fancy">' + properties.name + '</h3>' +
   '<section class="information">' +
-  '<p class="address">' + properties.address + '</p>' +
-  '<p class="contact"><span class="phone-number">' + properties.phone + '</span>' + ' | ' +'<span class="website"><a target="_blank" href="http://' + properties.website + '">website</a></span>' +
-  '<p class=program-highlights>' + properties.program_highlights + '</p>' +
+  '<div class="tabs-content">' +
+    '<div class="content active" id="basics">' +
+      '<p class="address">' + properties.address + '</p>' +
+      '<p class="contact"><span class="phone-number">' + properties.phone + '</span>' + ' | ' +'<span class="website"><a target="_blank" href="http://' + properties.website + '">website</a></span>' +
+      '<p class=program-highlights>' + properties.program_highlights + '</p>' +
+    '</div>' +
+    '<div class="content" id="programs">' +
+      '<p></p>' + //add information on schools' programs here
+    '</div>' +
+    '<div class="content" id="performance">' +
+      '<p></p>' + //add information on schools' performance here
+    '</div>' +
+  '</div>' +
+  '<dl class="tabs" data-tab>' +
+  '<dd class="active"><a href="#basics">basics</a></dd>' +
+  '<dd><a href="#programs">programs</a></dd>' +
+  '<dd><a href="#performance">performance</a></dd>' +
+  '</dl>' +
   '<a class="close-reveal-modal">&#215;</a>'+
   '</div>'
 
