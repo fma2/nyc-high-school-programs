@@ -69,9 +69,9 @@ function addModalContent(marker) {
     '</div>' +
   '</div>' +
   '<dl class="tabs" data-tab>' +
-  '<dd class="active"><a href="#basics">basics</a></dd>' +
-  '<dd><a href="#programs">programs</a></dd>' +
-  '<dd><a href="#performance">performance</a></dd>' +
+  '<dd class="active"><a href="#basics"><h3>basics</h3></a></dd>' +
+  '<dd><a href="#programs"><h3>programs</h3></a></dd>' +
+  '<dd><a href="#performance"><h3>performance</h3></a></dd>' +
   '</dl>' +
   '<a class="close-reveal-modal">&#215;</a>'+
   '</div>'

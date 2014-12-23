@@ -1,6 +1,6 @@
 class SchoolsController < ApplicationController
 	def index
-		@schools = School.all
+		@schools = School.order("school_name")
 		@geojson = Array.new
 		@schools.each do |school|
 			@programs = school.programs

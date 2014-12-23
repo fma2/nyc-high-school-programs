@@ -1,10 +1,30 @@
 <div id='loader'><span class='message'>loading</span></div>
 
 <div class='col12'>
+	<div class='contain'>
+		<div id='modal-content' class='animate modal modal-content'>
+			<form id='modal-name' class='modal-popup' method='post'>
+				<div class='col6 modal-body fill-white contain'>
+					<a href='#close' class='quiet pad1 icon fr close dark'></a>
+					<div class='fill-blue dark pad2y'>
+						<div class='pad4x center'>
+							<h2>near where?</h2>
+						</div>
+						<div class='pad4x pad2y'>
+							<input type='text' name='search-address' class='round clean stretch space-bottom2' placeholder='e.g. 623 East 68th Street' />
+						</div>
+					</div>
+					<div class='fill-gray pad2y pad4x center clearfix'>
+						<input type='submit' class='col6 margin3' value='submit address' />
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
 	<div class='center'>
 		<div id="map"></div>
 	</div>
-
 
 	<div id='sidebar' class='col5 pin-left'>
 		<div id="top-section">
