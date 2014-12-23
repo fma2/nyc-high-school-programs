@@ -31,7 +31,7 @@
   border-radius:3px;
   }
 
-#menu {
+#sidebar {
   left: 20px;
   overflow:auto;
 
@@ -46,7 +46,7 @@ a {
   clear: both;
 }
 
-#top-of-menu {
+#top-section {
   z-index: 2;
 }
 
@@ -90,4 +90,16 @@ a {
 .popup .type p {
   height:37px;
   float:right
+}
+
+#title {
+  color: white;
+  text-align: center;
+}
+
+#toggle {
+  background: gray;
+}
+#toggle label{
+  color:black;
 }
