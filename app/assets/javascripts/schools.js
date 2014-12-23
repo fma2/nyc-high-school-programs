@@ -82,8 +82,6 @@ function addMarkerContent(marker) {
     closeButton: false,
     minWidth: 320
   });
-
-
 }
 
 function createClusterGroup(data) {
@@ -197,7 +195,7 @@ function displayFilterList(pageElement, array, field) {
   checkboxes =[];
   for (var i = 0; i < array.length; i++) {
     // Create an an input checkbox and label inside.
-    var listItem = pageElement.appendChild(document.createElement('a'));
+    listItem = pageElement.appendChild(document.createElement('a'));
     listItem.setAttribute('class', 'col11 button');
 
     var checkbox = listItem.appendChild(document.createElement('input'));
@@ -234,8 +232,23 @@ function updateMapbyFilter(field) {
     var feature = marker.feature
     filterItemObj[feature.properties[field]] = true;
   })
-  
+  createMarkerList(featureLayer)
 }
+
+function createMarkerList(data) {
+  var filteredListSection = document.getElementById('filtered-list');
+  filteredListSection.innerHTML = '';
+  data.eachLayer(function(layer) {
+    var school = filteredListSection.appendChild(document.createElement('a'));
+    school.setAttribute('class', 'col11 button');
+    school.innerHTML = layer.toGeoJSON().properties.name;
+    school.onclick = function() {
+     map.setView(layer.getLatLng(), 16);
+     layer.openPopup();
+   };
+ });
+}
+
 //Geocoder search bar
 // var output = document.getElementById('output');
 // // Initialize the geocoder control and add it to the map.
