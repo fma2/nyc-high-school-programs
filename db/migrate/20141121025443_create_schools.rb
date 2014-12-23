@@ -21,6 +21,20 @@ class CreateSchools < ActiveRecord::Migration
         t.string :dbn
         t.string :school_name
 
+        t.string :ontrack_year1_2013
+        t.string :graduation_rate_2013
+        t.string :college_career_rate_2013
+        t.string :student_satisfaction_2013
+        t.string :ontrack_year1_2012
+        t.string :graduation_rate_2012
+        t.string :student_satisfaction_2012
+        t.string :ontrack_year1_historic_avg_similar_schls
+        t.string :graduation_rate_historic_avg_similar_schl
+        t.string :college_career_rate_historic_avg_similar_schls
+        t.string :student_satisfaction_historic_avg_similar_schls
+        t.string :quality_review_rating
+        t.string :quality_review_year
+        
       t.timestamps
     end
   end
