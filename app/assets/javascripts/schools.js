@@ -23,12 +23,15 @@ var allSchoolsToggle = document.getElementById('listToggle')
 var typeToggle = document.getElementById('typesToggle')
 var programsToggle = document.getElementById('programsToggle');
 var performanceToggle = document.getElementById('performanceToggle');
+var searchToggle = document.getElementById('searchToggle');
 var markerList = document.getElementById('markers-list')
 var typesList = document.getElementById('types-list');
 var interestAreasList = document.getElementById('interest-areas-list');
 var clusterGroup, featureLayer;
 var filterItemObj = {}, filterItems = [], checkboxes=[];
 var rawData;
+$("#search-option").hide();
+
 //Place all school markers on map at load
 $.ajax({
   dataType: 'json',
@@ -133,12 +136,21 @@ function createAllSchoolsMarkerList(data) {
  });
 }
 
+//Search toggle
+searchToggle.onclick = function(e) {
+  $("#types-list").hide();
+  $("#interest-areas-list").hide();
+  $("#markers-list").hide();
+  $("#filtered-list").hide();
+  $("#search-option").show();
+
+}
 //Marker list toggle
 allSchoolsToggle.onclick = function(e) {
   map.removeLayer(clusterGroup);
   $("#types-list").hide();
   $("#interest-areas-list").hide();
-  $(".search-form").show();
+  $("#search-option").hide();
   $("#markers-list").show();
   markerList.innerHTML = '';
   featureLayer = L.mapbox.featureLayer(rawData)
@@ -154,7 +166,7 @@ allSchoolsToggle.onclick = function(e) {
 typesToggle.onclick = function(e) {
   map.removeLayer(clusterGroup);
   $("#markers-list").hide();
-  $(".search-form").hide();
+  $("#search-option").hide();  
   $("#interest-areas-list").hide();
   $("#types-list").show();
   typesList.innerHTML = '';
@@ -168,7 +180,7 @@ typesToggle.onclick = function(e) {
 programsToggle.onclick = function(e) {
   map.removeLayer(clusterGroup);
   $("#types-list").hide();
-  $(".search-form").hide();
+  $("#search-option").hide();
   $("#markers-list").hide();
   $("#interest-areas-list").show();
   interestAreasList.innerHTML = '';
