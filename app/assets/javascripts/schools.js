@@ -58,6 +58,7 @@ function addModalContent(marker) {
     '<div class="content active" id="basics">' +
       '<p class="address">' + properties.address + '</p>' +
       '<p class="contact"><span class="phone-number">' + properties.phone + '</span>' + ' | ' +'<span class="website"><a target="_blank" href="http://' + properties.website + '">website</a></span>' +
+      '<p class="grades">Grades ' + properties.grade_span_min + ' to ' + properties.grade_span_max + '</p>' +
       '<p class=program-highlights>' + properties.program_highlights + '</p>' +
     '</div>' +
     '<div class="content" id="programs">' +
@@ -98,7 +99,6 @@ function addMarkerContent(marker) {
   '</div>' +
   '<div class="info">' +
   '<h3 class="popup-title">' + properties.name + '</h3>' +
-  '<p class="grades">Grades ' + properties.grade_span_min + ' to ' + properties.grade_span_max + '</p>' +
   '<p class="address">' + properties.address + ', ' + properties.zip + '</p>' +
   '</div>' +
   '<a href="#" data-reveal-id="modal' + properties.dbn + '">' +
