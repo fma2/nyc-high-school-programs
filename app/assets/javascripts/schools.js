@@ -28,19 +28,19 @@ var typesList = document.getElementById('types-list');
 var interestAreasList = document.getElementById('interest-areas-list');
 var clusterGroup, featureLayer;
 var filterItemObj = {}, filterItems = [], checkboxes=[];
-
+var rawData;
 //Place all school markers on map at load
 $.ajax({
   dataType: 'json',
   url: '/',
   type: 'GET'
 }).success(function(data){
+  rawData = data;
   var featureLayer = L.mapbox.featureLayer(data)
   clusterGroup = createClusterGroup(featureLayer)
   map.addLayer(clusterGroup);
   clusterGroup.eachLayer(function(marker) {
     addMarkerContent(marker);
-    // addModalContent(marker);
   })
   createAllSchoolsMarkerList(featureLayer);
 });
@@ -48,7 +48,8 @@ $.ajax({
 //Add modal content with Foundation
 function addModalContent(marker) {
   var properties = marker.feature.properties
-   var modal = 
+  var programs = properties.programs
+  var modal = 
   '<div id="modal' + properties.dbn + '" class="reveal-modal" data-reveal>' +
   '<div id="modal-map"></div>' +
   '<h3 class="title fancy">' + properties.name + '</h3>' +
@@ -56,10 +57,9 @@ function addModalContent(marker) {
   '<p class="address">' + properties.address + '</p>' +
   '<p class="contact"><span class="phone-number">' + properties.phone + '</span>' + ' | ' +'<span class="website"><a target="_blank" href="http://' + properties.website + '">website</a></span>' +
   '<p class=program-highlights>' + properties.program_highlights + '</p>' +
-  '<p><a href="#" data-reveal-id="secondModal" class="secondary button">Second Modal...</a></p>'+
-  '</section>' +
   '<a class="close-reveal-modal">&#215;</a>'+
   '</div>'
+
   $("body").append(modal);
   var modalId = '#modal' + properties.dbn;
   $(modalId).foundation('reveal', 'close')
@@ -126,19 +126,13 @@ allSchoolsToggle.onclick = function(e) {
   $(".search-form").show();
   $("#markers-list").show();
   markerList.innerHTML = '';
-  $.ajax({
-    dataType: 'json',
-    url: '/',
-    type: 'GET'
-  }).success(function(data){
-    var featureLayer = L.mapbox.featureLayer(data)
-    clusterGroup = createClusterGroup(featureLayer)
-    map.addLayer(clusterGroup);
-    clusterGroup.eachLayer(function(marker) {
-      addMarkerContent(marker);
-    })
-    createAllSchoolsMarkerList(featureLayer);
-  });
+  featureLayer = L.mapbox.featureLayer(rawData)
+  clusterGroup = createClusterGroup(featureLayer)
+  map.addLayer(clusterGroup);
+  clusterGroup.eachLayer(function(marker) {
+    addMarkerContent(marker);
+  })
+  createAllSchoolsMarkerList(featureLayer);
 }
 
 //Types filter list toggle
@@ -149,18 +143,10 @@ typesToggle.onclick = function(e) {
   $("#interest-areas-list").hide();
   $("#types-list").show();
   typesList.innerHTML = '';
-
-  $.ajax({
-    dataType: 'json',
-    url: '/',
-    type: 'GET'
-  }).success(function(data) {
-    featureLayer = L.mapbox.featureLayer(data)
-    clusterGroup = createClusterGroup(featureLayer);
-
-    var typesArr = createFilterList(clusterGroup, 'type');
-    displayFilterList(typesList, typesArr, 'type');
-  })
+  featureLayer = L.mapbox.featureLayer(rawData)
+  clusterGroup = createClusterGroup(featureLayer);
+  var typesArr = createFilterList(clusterGroup, 'type');
+  displayFilterList(typesList, typesArr, 'type');
 }
 
 //Add programs filter to menu on click
