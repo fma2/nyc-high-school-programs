@@ -226,7 +226,7 @@ function updateMapbyFilter(field) {
   featureLayer.eachLayer(function(layer) {
     clusterGroup.addLayer(layer);
   })
-  map.addLayer(clusterGroup);
+  map.addLayer(clusterGroup).setView([40.78, -73.999], 11);
   clusterGroup.eachLayer(function(marker) {
     addMarkerContent(marker)
     var feature = marker.feature
