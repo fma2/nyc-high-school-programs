@@ -2,19 +2,32 @@
 L.mapbox.accessToken = 'pk.eyJ1IjoiZm1hMiIsImEiOiJkcmdtd0NjIn0.dw0I__cIjfXpz37Yj0DQmw';
 
 //Place map and load all markers
-var map = L.mapbox.map('map').setView([40.75, -74.09], 11).addLayer(L.mapbox.tileLayer('fma2.kgkm6i0a'));
-map.addControl(L.mapbox.shareControl());
+var map = L.mapbox.map('map', 'fma2.kgkm6i0a', {zoomControl:false, attributionControl: false}).setView([40.75, -74.09], 11);
+map.addControl(L.mapbox.infoControl().addInfo('<a href="https://www.mapbox.com/about/maps/" target="_blank">Maps &copy; Mapbox &copy; OpenStreetMap</a>',{position: 'bottomright'}));
+
+var zoomControl = new L.Control.Zoom({position: 'bottomright' })
+zoomControl.addTo(map);
+
+var shareControl = L.mapbox.shareControl('http://visualize-hs-nyc.herokuapp.com/', {position:'bottomright'})
+shareControl.addTo(map)
+
+//Geocoder search bar
+// Initialize the geocoder control and add it to the map.
+var geocoderControl = L.mapbox.geocoderControl('mapbox.places-v1', {
+  autocomplete: true, position: 'topright', keepOpen: true
+});
+geocoderControl.addTo(map);
 
 //Variables for items on menu
 var allSchoolsToggle = document.getElementById('listToggle')
 var typeToggle = document.getElementById('typesToggle')
 var programsToggle = document.getElementById('programsToggle');
+var performanceToggle = document.getElementById('performanceToggle');
 var markerList = document.getElementById('markers-list')
 var typesList = document.getElementById('types-list');
 var interestAreasList = document.getElementById('interest-areas-list');
 var clusterGroup, featureLayer;
 var filterItemObj = {}, filterItems = [], checkboxes=[];
-var modalLink;
 
 //Place all school markers on map at load
 $.ajax({
@@ -82,15 +95,7 @@ function addMarkerContent(marker) {
     closeButton: false,
     minWidth: 320
   });
-
-
 }
-
-function openModal(properties){
-  console.log(properties)
-  console.log('modal clicked');
-}
-
 
 function createClusterGroup(data) {
   var clusterGroup = new L.MarkerClusterGroup();
@@ -103,7 +108,7 @@ function createClusterGroup(data) {
 function createAllSchoolsMarkerList(data) {
   data.eachLayer(function(layer) {
     var school = markerList.appendChild(document.createElement('a'));
-    school.setAttribute('class', 'col11 button');
+    school.setAttribute('class', 'col6 button quiet');
     school.innerHTML = layer.toGeoJSON().properties.name;
     school.onclick = function() {
      map.setView(layer.getLatLng(), 16);
@@ -179,6 +184,14 @@ programsToggle.onclick = function(e) {
   });
 }
 
+//Add performance data filter to menu on click
+performanceToggle.onclick = function(e) {
+  $("#types-list").hide();
+  $("#interest-areas-list").hide();
+  $(".search-form").hide();
+  $("#markers-list").hide();
+}
+
 //Filtering methods
 
 function createFilterList(data, field) {
@@ -195,8 +208,8 @@ function displayFilterList(pageElement, array, field) {
   checkboxes =[];
   for (var i = 0; i < array.length; i++) {
     // Create an an input checkbox and label inside.
-    var listItem = pageElement.appendChild(document.createElement('a'));
-    listItem.setAttribute('class', 'col11 button');
+    listItem = pageElement.appendChild(document.createElement('a'));
+    listItem.setAttribute('class', 'col4 button quiet');
 
     var checkbox = listItem.appendChild(document.createElement('input'));
     var label = listItem.appendChild(document.createElement('label'));
@@ -232,14 +245,63 @@ function updateMapbyFilter(field) {
     var feature = marker.feature
     filterItemObj[feature.properties[field]] = true;
   })
-  
+  createMarkerList(featureLayer)
 }
-//Geocoder search bar
-// var output = document.getElementById('output');
-// // Initialize the geocoder control and add it to the map.
-// var geocoderControl = L.mapbox.geocoderControl('mapbox.places-v1', {
-//   autocomplete: true
-// });
-// geocoderControl.addTo(map);
 
+function createMarkerList(data) {
+  var filteredListSection = document.getElementById('filtered-list');
+  filteredListSection.innerHTML = '';
+  data.eachLayer(function(layer) {
+    var school = filteredListSection.appendChild(document.createElement('a'));
+    school.setAttribute('class', 'col4 quiet button');
+    school.innerHTML = layer.toGeoJSON().properties.name;
+    school.onclick = function() {
+     map.setView(layer.getLatLng(), 16);
+     layer.openPopup();
+   };
+ });
+}
+
+
+
+
+//Find user's location
+var geolocate = document.getElementById('geolocate');
+var userLocationLayer = L.mapbox.featureLayer().addTo(map);
+if (!navigator.geolocation) {
+    geolocate.innerHTML = 'Geolocation is not available';
+} else {
+    geolocate.onclick = function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        map.locate();
+    };
+}
+
+// Once we've got a position, zoom and center the map
+// on it, and add a single marker.
+map.on('locationfound', function(e) {
+    map.fitBounds(e.bounds);
+    userLocationLayer.setGeoJSON({
+        type: 'Feature',
+        geometry: {
+            type: 'Point',
+            coordinates: [e.latlng.lng, e.latlng.lat]
+        },
+        properties: {
+            'title': 'You!',
+            'marker-color': '#ff8888',
+            'marker-symbol': 'star'
+        }
+    });
+
+    // And hide the geolocation button
+    geolocate.parentNode.removeChild(geolocate);
+});
+
+// If the user chooses not to allow their location
+// to be shared, display an error message.
+map.on('locationerror', function() {
+    geolocate.innerHTML = 'Position could not be found';
+});
 

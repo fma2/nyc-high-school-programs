@@ -1,52 +1,59 @@
 <div id='loader'><span class='message'>loading</span></div>
 
-<div class='center quiet'>
-	<div id="map"></div>
-</div>
+<div class='col12'>
+	<div class='center'>
+		<div id="map"></div>
+	</div>
 
-<div id='sidebar' class='col5 pad2 fill-darken2 pin-left'>
-	<div id="top-section">
-		
-		<h1 id="title" class='fancy'>visualize-HS
-		</h1>	
-		<br>
-		<br>
-		<br>
-		<div id="toggleBar">
-			<div id="toggle" class='rounded-toggle inline'>
-				<a href="/" class='icon home'></a>
-				<input id='listToggle' type='radio' name='rtoggle' value='types' checked='checked'>
-				<label for='listToggle'>all</label>
-				<input id='typesToggle' type='radio' name='rtoggle' value='types'>
-				<label for='typesToggle'>filter by school types</label>
-				<input id='programsToggle' type='radio' name='rtoggle' value='programs'>
-				<label for='programsToggle'>filter by interest area</label>
+
+	<div id='sidebar' class='col5 pin-left'>
+		<div id="top-section">
+			
+			<h1 id="title" class='fancy'>visualize-HS
+			</h1>	
+			<br>
+			<br>
+			<br>
+			<a href='#' id='geolocate'><p class='icon compass'></p></a>
+
+			<div id="toggleBar">
+				<div id="toggle" class='rounded-toggle inline quiet'>
+					<a href="/" class='icon home'></a>
+					<input id='listToggle' type='radio' name='rtoggle' value='types' checked='checked'>
+					<label for='listToggle'>all schools</label>
+					<input id='typesToggle' type='radio' name='rtoggle' value='types'>
+					<label for='typesToggle'>filter by school types</label>
+					<input id='programsToggle' type='radio' name='rtoggle' value='programs'>
+					<label for='programsToggle'>filter by interest area</label>
+					<input id='performanceToggle' type='radio' name='rtoggle' value='performance'>
+					<label for='performanceToggle'>filter by performance</label>
+				</div>
 			</div>
 		</div>
-	</div>
-	<div id='filters'>
-		<form class="search-form">
-			<fieldset class='with-icon'>
-				<span class='icon search'></span>
-				<input type='text' value='search' />
-			</fieldset>
-		</form>
-		<div id="markers-list" class="pill"></div>
-		<div id="types-list" class="pill"></div>
-		<div id="interest-areas-list" class="pill"></div>
-	</div>
-	<footer>
-		<p>2014 <a href="#" id="about" data-reveal-id="aboutModal">visualize-hs</a></p>
-		<p><a>feedback</a></p>
-	</footer>
+		<div id='filters'>
+			<form class="search-form">
+				<fieldset class='with-icon'>
+					<span class='icon search'></span>
+					<input type='text' value='search' />
+				</fieldset>
+			</form>
+			<div id="markers-list" class="pill"></div>
+			<div id="types-list" class="pill"></div>
+			<div id="interest-areas-list" class="pill"></div>
+			<div id="filtered-list" class="pill"></div>
+		</div>
+		<footer>
+			<p>2014 <a href="#" id="about" data-reveal-id="aboutModal">visualize-hs</a></p>
+			<p><a>feedback</a></p>
+		</footer>
 
-	<div id="aboutModal" class="reveal-modal" data-reveal>
-		<h2>about visualize-hs.</h2>
-		<a class="close-reveal-modal">&#215;</a>
-	</div>
+		<div id="aboutModal" class="reveal-modal" data-reveal>
+			<h2>about visualize-hs.</h2>
+			<a class="close-reveal-modal">&#215;</a>
+		</div>
 
+	</div>
 </div>
-
 
 
 
