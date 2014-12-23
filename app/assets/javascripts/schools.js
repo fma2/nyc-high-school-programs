@@ -2,7 +2,7 @@
 L.mapbox.accessToken = 'pk.eyJ1IjoiZm1hMiIsImEiOiJkcmdtd0NjIn0.dw0I__cIjfXpz37Yj0DQmw';
 
 //Place map and load all markers
-var map = L.mapbox.map('map').setView([40.78, -73.999], 11).addLayer(L.mapbox.tileLayer('fma2.kgkm6i0a'));
+var map = L.mapbox.map('map').setView([40.75, -74.09], 11).addLayer(L.mapbox.tileLayer('fma2.kgkm6i0a'));
 map.addControl(L.mapbox.shareControl());
 
 //Variables for items on menu
