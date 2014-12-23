@@ -37,14 +37,18 @@ function addModalContent(marker) {
   var properties = marker.feature.properties
    var modal = 
   '<div id="modal' + properties.dbn + '" class="reveal-modal" data-reveal>' +
-  '<h2>Awesome. I have it.</h2>' +
-  '<p class="lead">Your couch.  It is mine.</p>' +
-  '<p>Im a cool paragraph that lives inside of an even cooler modal. Wins!</p>' +
-  '<a class="close-reveal-modal">&#215;</a>'
+  '<div id="modal-map"></div>' +
+  '<h3 class="title fancy">' + properties.name + '</h3>' +
+  '<section class="information">' +
+  '<p class="address">' + properties.address + '</p>' +
+  '<p class="contact"><span class="phone-number">' + properties.phone + '</span>' + ' | ' +'<span class="website"><a target="_blank" href="' + properties.website + '">website</a></span>' +
+  '<p class=program-highlights>' + properties.program_highlights + '</p>'
+  '</section>' +
+  '<a class="close-reveal-modal">&#215;</a>'+
+  '</div>'
   $("body").append(modal);
   var modalId = '#modal' + properties.dbn;
   $(modalId).foundation('reveal', 'close')
-
 }
 
 //Displaying of markers methods
