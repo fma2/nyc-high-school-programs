@@ -41,7 +41,7 @@ function addModalContent(marker) {
   '<h3 class="title fancy">' + properties.name + '</h3>' +
   '<section class="information">' +
   '<p class="address">' + properties.address + '</p>' +
-  '<p class="contact"><span class="phone-number">' + properties.phone + '</span>' + ' | ' +'<span class="website"><a target="_blank" href="' + properties.website + '">website</a></span>' +
+  '<p class="contact"><span class="phone-number">' + properties.phone + '</span>' + ' | ' +'<span class="website"><a target="_blank" href="http://' + properties.website + '">website</a></span>' +
   '<p class=program-highlights>' + properties.program_highlights + '</p>'
   '</section>' +
   '<a class="close-reveal-modal">&#215;</a>'+
@@ -226,7 +226,7 @@ function updateMapbyFilter(field) {
   featureLayer.eachLayer(function(layer) {
     clusterGroup.addLayer(layer);
   })
-  map.addLayer(clusterGroup).setView([40.78, -73.999], 11);
+  map.addLayer(clusterGroup).setView([40.75, -74.09], 11);
   clusterGroup.eachLayer(function(marker) {
     addMarkerContent(marker)
     var feature = marker.feature
