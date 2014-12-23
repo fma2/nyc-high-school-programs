@@ -3,6 +3,7 @@ L.mapbox.accessToken = 'pk.eyJ1IjoiZm1hMiIsImEiOiJkcmdtd0NjIn0.dw0I__cIjfXpz37Yj
 
 //Place map and load all markers
 var map = L.mapbox.map('map').setView([40.78, -73.94], 11).addLayer(L.mapbox.tileLayer('fma2.kgkm6i0a'));
+map.addControl(L.mapbox.shareControl());
 
 //Variables for items on menu
 var allSchoolsToggle = document.getElementById('listToggle')
@@ -13,7 +14,7 @@ var typesList = document.getElementById('types-list');
 var interestAreasList = document.getElementById('interest-areas-list');
 var clusterGroup, featureLayer;
 var filterItemObj = {}, filterItems = [], checkboxes=[];
-
+var modalLink;
 
 //Place all school markers on map at load
 $.ajax({
@@ -26,36 +27,70 @@ $.ajax({
   map.addLayer(clusterGroup);
   clusterGroup.eachLayer(function(marker) {
     addMarkerContent(marker);
+    // addModalContent(marker);
   })
   createAllSchoolsMarkerList(featureLayer);
 });
 
+//Add modal content with Foundation
+function addModalContent(marker) {
+  var properties = marker.feature.properties
+   var modal = 
+  '<div id="modal' + properties.dbn + '" class="reveal-modal" data-reveal>' +
+  '<div id="modal-map"></div>' +
+  '<h3 class="title fancy">' + properties.name + '</h3>' +
+  '<section class="information">' +
+  '<p class="address">' + properties.address + '</p>' +
+  '<p class="contact"><span class="phone-number">' + properties.phone + '</span>' + ' | ' +'<span class="website"><a target="_blank" href="' + properties.website + '">website</a></span>' +
+  '<p class=program-highlights>' + properties.program_highlights + '</p>'
+  '</section>' +
+  '<a class="close-reveal-modal">&#215;</a>'+
+  '</div>'
+  $("body").append(modal);
+  var modalId = '#modal' + properties.dbn;
+  $(modalId).foundation('reveal', 'close')
+}
+
 //Displaying of markers methods
 function addMarkerContent(marker) {
-  var properties = marker.feature.properties
+  var rightArrow = document.createElement("img")
+  rightArrow.src = "https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-ios7-arrow-right-128.png";
+  rightArrow.alt="Right Arrow";
+  rightArrow.id="right-arrow";
+  rightArrow.className= "right-arrow";
+
+  rightArrow.addEventListener('click',function(){openModal(properties)});
+
+  var properties = marker.feature.properties;
   popupContent = 
   '<div class="popup">' +
-    '<div class="type">' +
-      '<p class="icon book"></p>' +
-    '</div>' +
-    '<div class="info">' +
-      '<h3 class="popup-title">' + properties.name + '</h3>' +
-      '<p class="grades">Grades ' + properties.grade_span_min + ' to ' + properties.grade_span_max + '</p>' +
-      '<p class="address">' + properties.address + ', ' + properties.zip + '</p>' +
-    '</div>' +
-    '<img alt="Right Arrow" class="right-arrow" src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-ios7-arrow-right-128.png">' +
-  '</div>'
-  // var modalLink = document.getElementsByClassName('right-arrow');
-  // modalLink.addEventListener('click',openModal);
+  '<div class="type">' +
+  '<p class="icon book"></p>' +
+  '</div>' +
+  '<div class="info">' +
+  '<h3 class="popup-title">' + properties.name + '</h3>' +
+  '<p class="grades">Grades ' + properties.grade_span_min + ' to ' + properties.grade_span_max + '</p>' +
+  '<p class="address">' + properties.address + ', ' + properties.zip + '</p>' +
+  '</div>' +
+  '<a href="#" data-reveal-id="modal' + properties.dbn + '">' +
+  rightArrow.outerHTML + '</a>'
+  '</div>';
+  
+  addModalContent(marker);
+
   marker.bindPopup(popupContent, {
     closeButton: false,
     minWidth: 320
   });
+
+
 }
 
-function openModal(){
+function openModal(properties){
+  console.log(properties)
   console.log('modal clicked');
 }
+
 
 function createClusterGroup(data) {
   var clusterGroup = new L.MarkerClusterGroup();
