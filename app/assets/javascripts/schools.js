@@ -42,7 +42,7 @@ function addModalContent(marker) {
   '<p>Im a cool paragraph that lives inside of an even cooler modal. Wins!</p>' +
   '<a class="close-reveal-modal">&#215;</a>'
   $("body").append(modal);
-  var modalId = '#modal' + properties.dbn
+  var modalId = '#modal' + properties.dbn;
   $(modalId).foundation('reveal', 'close')
 
 }
