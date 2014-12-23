@@ -23,11 +23,25 @@ class SchoolsController < ApplicationController
 					dbn: school.dbn,
 					grade_span_min: school.grade_span_min,
 					grade_span_max: school.grade_span_max,
+					programs: [],
 					:'marker-color' => '#00607d',
       		:'marker-symbol' => 'circle',
       		:'marker-size' => 'medium'
 				}
 			}
+			@programs = school.programs
+			@programs.each do |program|
+				programs = @geojson[0][:properties][:programs]
+				program_name = program.program_name
+				programs << {
+					program_name: {
+						interest_area: program.interest_area,
+						selection_method: program.selection_method,
+						selection_method_abbrevi: program.selection_method_abbrevi,
+						urls: program.urls,
+					}
+				}
+			end
 		end
 		respond_to do |format|
 			format.html
