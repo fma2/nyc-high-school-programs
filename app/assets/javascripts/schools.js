@@ -95,7 +95,7 @@ function addMarkerContent(marker) {
   popupContent = 
   '<div class="popup">' +
   '<div class="type">' +
-  '<p class="icon book"></p>' +
+  // '<p class="icon book"></p>' +
   '</div>' +
   '<div class="info">' +
   '<h3 class="popup-title">' + properties.name + '</h3>' +
