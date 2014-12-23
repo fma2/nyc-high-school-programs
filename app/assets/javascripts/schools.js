@@ -158,18 +158,19 @@ programsToggle.onclick = function(e) {
   $("#interest-areas-list").show();
   interestAreasList.innerHTML = '';
 
-  $.ajax({
-    dataType: 'json',
-    url: '/programs',
-    type: 'GET'
-  }).success(function(data) {
-    featureLayer = L.mapbox.featureLayer(data)
+  // $.ajax({
+  //   dataType: 'json',
+  //   url: '/programs',
+  //   type: 'GET'
+  // }).success(function(data) {
+    featureLayer = L.mapbox.featureLayer(rawData)
     clusterGroup = createClusterGroup(featureLayer)
     
-    var programsAry = createFilterList(clusterGroup, 'interest_area');
-    displayFilterList(interestAreasList, programsAry, 'interest_area');
-  });
+    var programsAry = createProgramsFilterList(clusterGroup, 'interest_area');
+    displayProgramsFilterList(interestAreasList, programsAry, 'interest_area');
+  // });
 }
+
 
 //Add performance data filter to menu on click
 performanceToggle.onclick = function(e) {
@@ -179,8 +180,73 @@ performanceToggle.onclick = function(e) {
   $("#markers-list").hide();
 }
 
-//Filtering methods
+//Filtering methods for programs
+function createProgramsFilterList(data, field) {
+  filterItemObj = {}; filterItems = [];
+  data.eachLayer(function(marker) {
+    var programsList = marker.feature.properties.programs
+    for (i=0; i<programsList.length; i++) {
+      filterItemObj[programsList[i][field]] = true;      
+    }
+  })
+  for (var k in filterItemObj) filterItems.push(k);
+    return filterItems;
+}
 
+function displayProgramsFilterList(pageElement, array, field) {
+  checkboxes =[];
+  for (var i = 0; i < array.length; i++) {
+    // Create an an input checkbox and label inside.
+    listItem = pageElement.appendChild(document.createElement('a'));
+    listItem.setAttribute('class', 'col4 button quiet');
+
+    var checkbox = listItem.appendChild(document.createElement('input'));
+    var label = listItem.appendChild(document.createElement('label'));
+    checkbox.type = 'checkbox';
+    checkbox.id = array[i];
+    checkbox.checked = false;
+    label.innerHTML = array[i];
+    label.setAttribute('for', array[i]);
+    checkbox.addEventListener('change', function(){updateMapbyProgramsFilter(field)});
+    checkboxes.push(checkbox);
+  }
+}
+
+function updateMapbyProgramsFilter(field) {
+  var enabled = {};
+  for (var i = 0; i < checkboxes.length; i++) {
+    if (checkboxes[i].checked) enabled[checkboxes[i].id] = true;
+  }
+
+  featureLayer.setFilter(function(feature) {
+    var programsList = feature.properties.programs
+    for (i=0; i<programsList.length; i++) {
+      if (programsList[i][field] in enabled) {
+        return true;
+      }
+    }  
+  });
+
+  map.removeLayer(clusterGroup);
+  clusterGroup = new L.MarkerClusterGroup();
+  featureLayer.eachLayer(function(layer) {
+    clusterGroup.addLayer(layer);
+  })
+  map.addLayer(clusterGroup).setView([40.75, -74.09], 11);
+  clusterGroup.eachLayer(function(marker) {
+    addMarkerContent(marker)
+    var programsList = marker.feature.properties.programs
+    for (i=0; i<programsList.length; i++) {
+      filterItemObj[programsList[i][field]] = true;      
+    }
+    // var feature = marker.feature
+    // filterItemObj[feature.properties[field]] = true;
+  })
+  createMarkerList(featureLayer)
+}
+
+
+//Filtering methods for types
 function createFilterList(data, field) {
   filterItemObj = {}; filterItems = [];
   data.eachLayer(function(marker) {
@@ -235,6 +301,7 @@ function updateMapbyFilter(field) {
   createMarkerList(featureLayer)
 }
 
+
 function createMarkerList(data) {
   var filteredListSection = document.getElementById('filtered-list');
   filteredListSection.innerHTML = '';
@@ -248,9 +315,6 @@ function createMarkerList(data) {
    };
  });
 }
-
-
-
 
 //Find user's location
 var geolocate = document.getElementById('geolocate');
