@@ -13,6 +13,7 @@ class SchoolsController < ApplicationController
 					name: school.school_name,
 					address: school.primary_address_line_1,
 					zip: school.zip,
+					phone: school.phone_number,
 					boro: school.boro,
 					type: school.school_type,
 					total_students: school.total_students,
