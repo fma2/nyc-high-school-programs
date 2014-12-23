@@ -9,6 +9,7 @@ map.addControl(L.mapbox.shareControl());
 var allSchoolsToggle = document.getElementById('listToggle')
 var typeToggle = document.getElementById('typesToggle')
 var programsToggle = document.getElementById('programsToggle');
+var performanceToggle = document.getElementById('performanceToggle');
 var markerList = document.getElementById('markers-list')
 var typesList = document.getElementById('types-list');
 var interestAreasList = document.getElementById('interest-areas-list');
@@ -177,6 +178,14 @@ programsToggle.onclick = function(e) {
     var programsAry = createFilterList(clusterGroup, 'interest_area');
     displayFilterList(interestAreasList, programsAry, 'interest_area');
   });
+}
+
+//Add performance data filter to menu on click
+performanceToggle.onclick = function(e) {
+  $("#types-list").hide();
+  $("#interest-areas-list").hide();
+  $(".search-form").hide();
+  $("#markers-list").hide();
 }
 
 //Filtering methods
