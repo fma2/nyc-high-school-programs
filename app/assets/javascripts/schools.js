@@ -2,8 +2,8 @@
 L.mapbox.accessToken = 'pk.eyJ1IjoiZm1hMiIsImEiOiJkcmdtd0NjIn0.dw0I__cIjfXpz37Yj0DQmw';
 
 //Place map and load all markers
-var map = L.mapbox.map('map').setView([40.75, -74.09], 11).addLayer(L.mapbox.tileLayer('fma2.kgkm6i0a'));
-map.addControl(L.mapbox.shareControl());
+var map = L.mapbox.map('map').setView([40.75, -74.09], 11).addLayer(L.mapbox.tileLayer('fma2.kgkm6i0a')).addControl(L.mapbox.shareControl({position: 'bottomright'}));
+new L.Control.Zoom({ position: 'bottomright' }).addTo(map);
 
 //Variables for items on menu
 var allSchoolsToggle = document.getElementById('listToggle')
@@ -250,11 +250,50 @@ function createMarkerList(data) {
 }
 
 //Geocoder search bar
-// var output = document.getElementById('output');
-// // Initialize the geocoder control and add it to the map.
-// var geocoderControl = L.mapbox.geocoderControl('mapbox.places-v1', {
-//   autocomplete: true
-// });
-// geocoderControl.addTo(map);
+// Initialize the geocoder control and add it to the map.
+var geocoderControl = L.mapbox.geocoderControl('mapbox.places-v1', {
+  autocomplete: true, position: 'topright'
+});
+geocoderControl.addTo(map);
 
+
+//Find user's location
+var geolocate = document.getElementById('geolocate');
+var userLocationLayer = L.mapbox.featureLayer().addTo(map);
+if (!navigator.geolocation) {
+    geolocate.innerHTML = 'Geolocation is not available';
+} else {
+    geolocate.onclick = function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        map.locate();
+    };
+}
+
+// Once we've got a position, zoom and center the map
+// on it, and add a single marker.
+map.on('locationfound', function(e) {
+    map.fitBounds(e.bounds);
+    userLocationLayer.setGeoJSON({
+        type: 'Feature',
+        geometry: {
+            type: 'Point',
+            coordinates: [e.latlng.lng, e.latlng.lat]
+        },
+        properties: {
+            'title': 'Here I am!',
+            'marker-color': '#ff8888',
+            'marker-symbol': 'star'
+        }
+    });
+
+    // And hide the geolocation button
+    geolocate.parentNode.removeChild(geolocate);
+});
+
+// If the user chooses not to allow their location
+// to be shared, display an error message.
+map.on('locationerror', function() {
+    geolocate.innerHTML = 'Position could not be found';
+});
 
