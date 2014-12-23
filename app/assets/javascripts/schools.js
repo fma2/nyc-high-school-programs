@@ -8,8 +8,8 @@ map.addControl(L.mapbox.infoControl().addInfo('<a href="https://www.mapbox.com/a
 var zoomControl = new L.Control.Zoom({position: 'bottomright' })
 zoomControl.addTo(map);
 
-var shareControl = L.mapbox.shareControl('http://visualize-hs-nyc.herokuapp.com/', {position:'bottomright'})
-shareControl.addTo(map)
+// var shareControl = L.mapbox.shareControl('fma2.kgkm6i0a', {position:'bottomright'})
+// shareControl.addTo(map)
 
 //Geocoder search bar
 // Initialize the geocoder control and add it to the map.
@@ -55,7 +55,8 @@ function addModalContent(marker) {
   '<section class="information">' +
   '<p class="address">' + properties.address + '</p>' +
   '<p class="contact"><span class="phone-number">' + properties.phone + '</span>' + ' | ' +'<span class="website"><a target="_blank" href="http://' + properties.website + '">website</a></span>' +
-  '<p class=program-highlights>' + properties.program_highlights + '</p>'
+  '<p class=program-highlights>' + properties.program_highlights + '</p>' +
+  '<p><a href="#" data-reveal-id="secondModal" class="secondary button">Second Modal...</a></p>'+
   '</section>' +
   '<a class="close-reveal-modal">&#215;</a>'+
   '</div>'
