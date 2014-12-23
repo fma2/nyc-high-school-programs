@@ -143,7 +143,7 @@ allSchoolsToggle.onclick = function(e) {
   markerList.innerHTML = '';
   featureLayer = L.mapbox.featureLayer(rawData)
   clusterGroup = createClusterGroup(featureLayer)
-  map.addLayer(clusterGroup);
+  map.addLayer(clusterGroup).setView([40.75, -74.09], 11);
   clusterGroup.eachLayer(function(marker) {
     addMarkerContent(marker);
   })
