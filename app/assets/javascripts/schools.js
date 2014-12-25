@@ -281,6 +281,7 @@ function createMarkerList(data) {
      layer.openPopup();
    };
  });
+  $(filteredListSection).show()
 }
 
 //Find user's location
