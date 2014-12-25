@@ -20,17 +20,18 @@ geocoderControl.addTo(map);
 
 //Variables for items on menu
 var allSchoolsToggle = document.getElementById('listToggle')
-var typeToggle = document.getElementById('typesToggle')
-var programsToggle = document.getElementById('programsToggle');
-var performanceToggle = document.getElementById('performanceToggle');
+var filtersToggle = document.getElementById('filtersToggle')
 var searchToggle = document.getElementById('searchToggle');
+
 var markerList = document.getElementById('markers-list')
 var typesList = document.getElementById('types-list');
 var interestAreasList = document.getElementById('interest-areas-list');
 var clusterGroup, featureLayer;
-var filterItemObj = {}, filterItems = [], checkboxes=[];
+var filterItemObj = {}, checkboxes=[];
 var rawData;
+
 $("#search-option").hide();
+$("#filters").hide()
 
 //Place all school markers on map at load
 $.ajax({
@@ -39,7 +40,7 @@ $.ajax({
   type: 'GET'
 }).success(function(data){
   rawData = data;
-  var featureLayer = L.mapbox.featureLayer(data)
+  featureLayer = L.mapbox.featureLayer(data)
   clusterGroup = createClusterGroup(featureLayer)
   map.addLayer(clusterGroup);
   clusterGroup.eachLayer(function(marker) {
@@ -62,6 +63,7 @@ function addModalContent(marker) {
       '<p class="address">' + properties.address + '</p>' +
       '<p class="contact"><span class="phone-number">' + properties.phone + '</span>' + ' | ' +'<span class="website"><a target="_blank" href="http://' + properties.website + '">website</a></span>' +
       '<p class="grades">Grades ' + properties.grade_span_min + ' to ' + properties.grade_span_max + '</p>' +
+      '<p class="address">' + properties.type + '</p>' +
       '<p class=program-highlights>' + properties.program_highlights + '</p>' +
     '</div>' +
     '<div class="content" id="programs">' +
@@ -138,8 +140,7 @@ function createAllSchoolsMarkerList(data) {
 
 //Search toggle
 searchToggle.onclick = function(e) {
-  $("#types-list").hide();
-  $("#interest-areas-list").hide();
+  $("#filters").hide()
   $("#markers-list").hide();
   $("#filtered-list").hide();
   $("#search-option").show();
@@ -148,8 +149,7 @@ searchToggle.onclick = function(e) {
 //Marker list toggle
 allSchoolsToggle.onclick = function(e) {
   map.removeLayer(clusterGroup);
-  $("#types-list").hide();
-  $("#interest-areas-list").hide();
+  $("#filters").hide()
   $("#search-option").hide();
   $("#markers-list").show();
   markerList.innerHTML = '';
@@ -162,163 +162,112 @@ allSchoolsToggle.onclick = function(e) {
   createAllSchoolsMarkerList(featureLayer);
 }
 
-//Types filter list toggle
-typesToggle.onclick = function(e) {
+filtersToggle.onclick = function(e) {
   map.removeLayer(clusterGroup);
   $("#markers-list").hide();
-  $("#search-option").hide();  
-  $("#interest-areas-list").hide();
-  $("#types-list").show();
-  typesList.innerHTML = '';
-  featureLayer = L.mapbox.featureLayer(rawData)
-  clusterGroup = createClusterGroup(featureLayer);
-  var typesArr = createFilterList(clusterGroup, 'type');
-  displayFilterList(typesList, typesArr, 'type');
-}
-
-//Add programs filter to menu on click
-programsToggle.onclick = function(e) {
-  map.removeLayer(clusterGroup);
-  $("#types-list").hide();
-  $("#search-option").hide();
-  $("#markers-list").hide();
-  $("#interest-areas-list").show();
-  interestAreasList.innerHTML = '';
-  featureLayer = L.mapbox.featureLayer(rawData)
-  clusterGroup = createClusterGroup(featureLayer)
+  $("#search-option").hide(); 
+  $("#filters").show()
   
-  var programsAry = createProgramsFilterList(clusterGroup, 'interest_area');
-  displayProgramsFilterList(interestAreasList, programsAry, 'interest_area');
+  typesList.innerHTML = '';
+  interestAreasList.innerHTML = '';
+
+  filtersLayer = L.mapbox.featureLayer(rawData);
+  var typesArr = createFilterList(filtersLayer, 'type')
+  var programsArr = createFilterList(filtersLayer, 'interest_area')
+
+  displayFilterList(typesList, typesArr, 'type')
+  displayFilterList(interestAreasList, programsArr, 'interest_area')
 }
 
-
-//Add performance data filter to menu on click
-performanceToggle.onclick = function(e) {
-  $("#types-list").hide();
-  $("#interest-areas-list").hide();
-  $(".search-form").hide();
-  $("#markers-list").hide();
-}
-
-//Filtering methods for programs
-function createProgramsFilterList(data, field) {
-  filterItemObj = {}; filterItems = [];
-  data.eachLayer(function(marker) {
-    var programsList = marker.feature.properties.programs
-    for (i=0; i<programsList.length; i++) {
-      filterItemObj[programsList[i][field]] = true;      
-    }
-  })
-  for (var k in filterItemObj) filterItems.push(k);
-    return filterItems;
-}
-
-function displayProgramsFilterList(pageElement, array, field) {
-  checkboxes =[];
-  for (var i = 0; i < array.length; i++) {
-    // Create an an input checkbox and label inside.
-    listItem = pageElement.appendChild(document.createElement('a'));
-    listItem.setAttribute('class', 'col4 button quiet');
-
-    var checkbox = listItem.appendChild(document.createElement('input'));
-    var label = listItem.appendChild(document.createElement('label'));
-    checkbox.type = 'checkbox';
-    checkbox.id = array[i];
-    checkbox.checked = false;
-    label.innerHTML = array[i];
-    label.setAttribute('for', array[i]);
-    checkbox.addEventListener('change', function(){updateMapbyProgramsFilter(field)});
-    checkboxes.push(checkbox);
-  }
-}
-
-function updateMapbyProgramsFilter(field) {
-  var enabled = {};
-  for (var i = 0; i < checkboxes.length; i++) {
-    if (checkboxes[i].checked) enabled[checkboxes[i].id] = true;
-  }
-
-  featureLayer.setFilter(function(feature) {
-    var programsList = feature.properties.programs
-    for (i=0; i<programsList.length; i++) {
-      if (programsList[i][field] in enabled) {
-        return true;
-      }
-    }  
-  });
-
-  map.removeLayer(clusterGroup);
-  clusterGroup = new L.MarkerClusterGroup();
-  featureLayer.eachLayer(function(layer) {
-    clusterGroup.addLayer(layer);
-  })
-  map.addLayer(clusterGroup).setView([40.75, -74.09], 11);
-  clusterGroup.eachLayer(function(marker) {
-    addMarkerContent(marker)
-    var programsList = marker.feature.properties.programs
-    for (i=0; i<programsList.length; i++) {
-      filterItemObj[programsList[i][field]] = true;      
-    }
-  })
-  createMarkerList(featureLayer)
-}
-
-
-//Filtering methods for types
 function createFilterList(data, field) {
-  filterItemObj = {}; filterItems = [];
+  var filterItems = [], filterItemObj = {}; 
   data.eachLayer(function(marker) {
-    var feature = marker.feature
-    filterItemObj[feature.properties[field]] = true;
+    if (field === "type") {
+      var feature = marker.feature
+      filterItemObj[feature.properties[field]] = true;
+    } else if (field === "interest_area") {
+      var programsList = marker.feature.properties.programs
+      for (i=0; i<programsList.length; i++) {
+        filterItemObj[programsList[i][field]] = true;      
+      }
+    }
   })
   for (var k in filterItemObj) filterItems.push(k);
-    return filterItems;
+  return filterItems;   
 }
 
 function displayFilterList(pageElement, array, field) {
-  checkboxes =[];
-  for (var i = 0; i < array.length; i++) {
-    // Create an an input checkbox and label inside.
-    listItem = pageElement.appendChild(document.createElement('a'));
-    listItem.setAttribute('class', 'col4 button quiet');
+  if (typesList.innerHTML == '' || interestAreasList.innerHTML == '') {
+    for (var i = 0; i < array.length; i++) {
+      // Create an an input checkbox and label inside.
+      var listItem = pageElement.appendChild(document.createElement('a'));
+      listItem.setAttribute('class', 'col4 button quiet');
 
-    var checkbox = listItem.appendChild(document.createElement('input'));
-    var label = listItem.appendChild(document.createElement('label'));
-    checkbox.type = 'checkbox';
-    checkbox.id = array[i];
-    checkbox.checked = false;
-    label.innerHTML = array[i];
-    label.setAttribute('for', array[i]);
-    checkbox.addEventListener('change', function(){updateMapbyFilter(field)});
-    checkboxes.push(checkbox);
+      var checkbox = listItem.appendChild(document.createElement('input'));
+      var label = listItem.appendChild(document.createElement('label'));
+      checkbox.type = 'checkbox';
+      checkbox.id = array[i];
+      checkbox.checked = false;
+      if (field == "type") {
+        checkbox.name = "type";
+      } else if (field =="interest_area") {
+        checkbox.name = "interest_area";
+      }
+      label.innerHTML = array[i];
+      label.setAttribute('for', array[i]);
+      checkboxes.push(checkbox);
+    }
   }
 }
 
-function updateMapbyFilter(field) {
+var filters = document.getElementById("filters");
+filters.onchange = changeMap;
+
+function changeMap() {
   var enabled = {};
-
+  var namesOfChecked = {};
   for (var i = 0; i < checkboxes.length; i++) {
-    if (checkboxes[i].checked) enabled[checkboxes[i].id] = true;
+    if (checkboxes[i].checked) {
+      enabled[checkboxes[i].id] = true;
+      namesOfChecked[checkboxes[i].name] = true;
+      }
   }
-  featureLayer.setFilter(function(feature) {
-    var x = (feature.properties[field] in enabled)
-    return (feature.properties[field] in enabled);
-  });
+  console.log(namesOfChecked);
 
+  featureLayer = L.mapbox.featureLayer(rawData);
+
+  featureLayer.setFilter(function(feature) {
+    if ("type" in namesOfChecked && "interest_area" in namesOfChecked) {
+      var programsList = feature.properties.programs
+      for (i=0; i<programsList.length; i++) {
+        if (programsList[i]['interest_area'] in enabled && feature.properties['type'] in enabled) {
+          return true;
+        }
+      }
+    } else if ("type" in namesOfChecked) {
+      return (feature.properties["type"] in enabled);      
+    } else if ("interest_area" in namesOfChecked) {
+        var programsList = feature.properties.programs
+        for (i=0; i<programsList.length; i++) {
+          if (programsList[i]['interest_area'] in enabled) {
+            return true;
+          }
+        }
+      } 
+  });
+  
   map.removeLayer(clusterGroup);
-  clusterGroup = new L.MarkerClusterGroup();
-  featureLayer.eachLayer(function(layer) {
-    clusterGroup.addLayer(layer);
-  })
+  clusterGroup = createClusterGroup(featureLayer)
+
   map.addLayer(clusterGroup).setView([40.75, -74.09], 11);
+  
   clusterGroup.eachLayer(function(marker) {
     addMarkerContent(marker)
     var feature = marker.feature
-    filterItemObj[feature.properties[field]] = true;
+    filterItemObj[feature.properties['type']] = true;
   })
   createMarkerList(featureLayer)
 }
-
 
 function createMarkerList(data) {
   var filteredListSection = document.getElementById('filtered-list');
@@ -332,6 +281,7 @@ function createMarkerList(data) {
      layer.openPopup();
    };
  });
+  $(filteredListSection).show()
 }
 
 //Find user's location
@@ -358,14 +308,10 @@ map.on('locationfound', function(e) {
             coordinates: [e.latlng.lng, e.latlng.lat]
         },
         properties: {
-            'title': 'You!',
             'marker-color': '#ff8888',
             'marker-symbol': 'star'
         }
     });
-
-    // And hide the geolocation button
-    geolocate.parentNode.removeChild(geolocate);
 });
 
 // If the user chooses not to allow their location
