@@ -283,25 +283,6 @@ performanceToggle.onclick = function(e) {
   $("#markers-list").hide();
 }
 
-//Filtering methods for programs
-function displayProgramsFilterList(pageElement, featureLayer, array, field) {
-  checkboxes =[];
-  for (var i = 0; i < array.length; i++) {
-    // Create an an input checkbox and label inside.
-    var listItem = pageElement.appendChild(document.createElement('a'));
-    listItem.setAttribute('class', 'col4 button quiet');
-
-    var checkbox = listItem.appendChild(document.createElement('input'));
-    var label = listItem.appendChild(document.createElement('label'));
-    checkbox.type = 'checkbox';
-    checkbox.id = array[i];
-    checkbox.checked = false;
-    label.innerHTML = array[i];
-    label.setAttribute('for', array[i]);
-    checkbox.addEventListener('change', function(){updateMapbyProgramsFilter(featureLayer, field)});
-    checkboxes.push(checkbox);
-  }
-}
 
 function updateMapbyProgramsFilter(featureLayer, field) {
   var enabled = {};
