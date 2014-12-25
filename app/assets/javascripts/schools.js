@@ -175,8 +175,8 @@ filtersToggle.onclick = function(e) {
   var typesArr = createFilterList(filtersLayer, 'type')
   var programsArr = createFilterList(filtersLayer, 'interest_area')
 
-  displayFilterList2(typesList, typesArr, 'type')
-  displayFilterList2(interestAreasList, programsArr, 'interest_area')
+  displayFilterList(typesList, typesArr, 'type')
+  displayFilterList(interestAreasList, programsArr, 'interest_area')
 }
 
 function createFilterList(data, field) {
@@ -196,7 +196,7 @@ function createFilterList(data, field) {
   return filterItems;   
 }
 
-function displayFilterList2(pageElement, array, field) {
+function displayFilterList(pageElement, array, field) {
   if (typesList.innerHTML == '' || interestAreasList.innerHTML == '') {
     for (var i = 0; i < array.length; i++) {
       // Create an an input checkbox and label inside.
@@ -268,13 +268,6 @@ function changeMap() {
   })
   createMarkerList(featureLayer)
 }
-
-//////
-
-
-//Filtering methods for types
-
-
 
 function createMarkerList(data) {
   var filteredListSection = document.getElementById('filtered-list');
