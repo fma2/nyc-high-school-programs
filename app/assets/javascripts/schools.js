@@ -35,6 +35,7 @@ var filterItemObj = {}, checkboxes=[];
 var rawData;
 
 $("#search-option").hide();
+$("#filters").hide()
 
 //Place all school markers on map at load
 $.ajax({
@@ -66,6 +67,7 @@ function addModalContent(marker) {
       '<p class="address">' + properties.address + '</p>' +
       '<p class="contact"><span class="phone-number">' + properties.phone + '</span>' + ' | ' +'<span class="website"><a target="_blank" href="http://' + properties.website + '">website</a></span>' +
       '<p class="grades">Grades ' + properties.grade_span_min + ' to ' + properties.grade_span_max + '</p>' +
+      '<p class="address">' + properties.type + '</p>' +
       '<p class=program-highlights>' + properties.program_highlights + '</p>' +
     '</div>' +
     '<div class="content" id="programs">' +
@@ -107,8 +109,6 @@ function addMarkerContent(marker) {
   '<div class="info">' +
   '<h3 class="popup-title">' + properties.name + '</h3>' +
   '<p class="address">' + properties.address + ', ' + properties.zip + '</p>' +
-  '<p class="address">' + properties.type + '</p>' +
-
   '</div>' +
   '<a href="#" data-reveal-id="modal' + properties.dbn + '">' +
   rightArrow.outerHTML + '</a>'
@@ -144,8 +144,7 @@ function createAllSchoolsMarkerList(data) {
 
 //Search toggle
 searchToggle.onclick = function(e) {
-  $("#types-list").hide();
-  $("#interest-areas-list").hide();
+  $("#filters").hide()
   $("#markers-list").hide();
   $("#filtered-list").hide();
   $("#search-option").show();
@@ -154,8 +153,7 @@ searchToggle.onclick = function(e) {
 //Marker list toggle
 allSchoolsToggle.onclick = function(e) {
   map.removeLayer(clusterGroup);
-  $("#types-list").hide();
-  $("#interest-areas-list").hide();
+  $("#filters").hide()
   $("#search-option").hide();
   $("#markers-list").show();
   markerList.innerHTML = '';
@@ -171,9 +169,8 @@ allSchoolsToggle.onclick = function(e) {
 filtersToggle.onclick = function(e) {
   map.removeLayer(clusterGroup);
   $("#markers-list").hide();
-  $("#search-option").hide();  
-  $("#interest-areas-list").show();
-  $("#types-list").show();
+  $("#search-option").hide(); 
+  $("#filters").show()
   
   typesList.innerHTML = '';
   interestAreasList.innerHTML = '';
@@ -223,7 +220,7 @@ function displayFilterList2(pageElement, array, field) {
       label.innerHTML = array[i];
       label.setAttribute('for', array[i]);
       checkboxes.push(checkbox);
-      }
+    }
   }
 }
 
