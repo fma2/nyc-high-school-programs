@@ -23,7 +23,6 @@ var allSchoolsToggle = document.getElementById('listToggle')
 var filtersToggle = document.getElementById('filtersToggle')
 var searchToggle = document.getElementById('searchToggle');
 
-var typeToggle = document.getElementById('typesToggle')
 var programsToggle = document.getElementById('programsToggle');
 var performanceToggle = document.getElementById('performanceToggle');
 
@@ -274,20 +273,6 @@ function changeMap() {
 }
 
 //////
-
-//Types filter list toggle
-typesToggle.onclick = function(e) {
-  map.removeLayer(clusterGroup);
-  $("#markers-list").hide();
-  $("#search-option").hide();  
-  $("#interest-areas-list").hide();
-  $("#types-list").show();
-  typesList.innerHTML = '';
-  featureLayer = L.mapbox.featureLayer(rawData)
-  clusterGroup = createClusterGroup(featureLayer);
-  var typesArr = createFilterList(clusterGroup, 'type');
-  displayFilterList(typesList, typesArr, 'type');
-}
 
 //Add programs filter to menu on click
 programsToggle.onclick = function(e) {
