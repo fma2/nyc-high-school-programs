@@ -107,6 +107,8 @@ function addMarkerContent(marker) {
   '<div class="info">' +
   '<h3 class="popup-title">' + properties.name + '</h3>' +
   '<p class="address">' + properties.address + ', ' + properties.zip + '</p>' +
+  '<p class="address">' + properties.type + '</p>' +
+
   '</div>' +
   '<a href="#" data-reveal-id="modal' + properties.dbn + '">' +
   rightArrow.outerHTML + '</a>'
@@ -213,11 +215,11 @@ function displayFilterList2(pageElement, array, field) {
       checkbox.type = 'checkbox';
       checkbox.id = array[i];
       checkbox.checked = false;
-      // if (field == "type") {
-      //   checkbox.name = "type";
-      // } else if (field =="interest_area") {
-      //   checkbox.name = "interest_area";
-      // }
+      if (field == "type") {
+        checkbox.name = "type";
+      } else if (field =="interest_area") {
+        checkbox.name = "interest_area";
+      }
       label.innerHTML = array[i];
       label.setAttribute('for', array[i]);
       checkboxes.push(checkbox);
@@ -225,33 +227,40 @@ function displayFilterList2(pageElement, array, field) {
   }
 }
 
-typesList.onchange = function() {changeMap('type')};
-interestAreasList.onchange = function(){changeMap('interest_area')}
+var filters = document.getElementById("filters");
+filters.onchange = changeMap;
 
-function changeMap(field) {
+function changeMap() {
   var enabled = {};
-  var namesOfChecked = [];
+  var namesOfChecked = {};
   for (var i = 0; i < checkboxes.length; i++) {
     if (checkboxes[i].checked) {
       enabled[checkboxes[i].id] = true;
-      // namesOfChecked.push(checkboxes[i].name)
+      namesOfChecked[checkboxes[i].name] = true;
       }
   }
+  console.log(namesOfChecked);
 
   featureLayer = L.mapbox.featureLayer(rawData);
 
   featureLayer.setFilter(function(feature) {
-    if (field=="type") {
-      return (feature.properties[field] in enabled);
-    } else if (field == "interest_area") {
+    if ("type" in namesOfChecked && "interest_area" in namesOfChecked) {
       var programsList = feature.properties.programs
-        console.log(programsList)
+      for (i=0; i<programsList.length; i++) {
+        if (programsList[i]['interest_area'] in enabled && feature.properties['type'] in enabled) {
+          return true;
+        }
+      }
+    } else if ("type" in namesOfChecked) {
+      return (feature.properties["type"] in enabled);      
+    } else if ("interest_area" in namesOfChecked) {
+        var programsList = feature.properties.programs
         for (i=0; i<programsList.length; i++) {
           if (programsList[i]['interest_area'] in enabled) {
             return true;
           }
         }
-    }
+      } 
   });
   
   map.removeLayer(clusterGroup);
