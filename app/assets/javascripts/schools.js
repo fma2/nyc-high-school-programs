@@ -308,14 +308,10 @@ map.on('locationfound', function(e) {
             coordinates: [e.latlng.lng, e.latlng.lat]
         },
         properties: {
-            'title': 'You!',
             'marker-color': '#ff8888',
             'marker-symbol': 'star'
         }
     });
-
-    // And hide the geolocation button
-    geolocate.parentNode.removeChild(geolocate);
 });
 
 // If the user chooses not to allow their location
