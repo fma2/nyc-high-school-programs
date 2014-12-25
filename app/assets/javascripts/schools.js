@@ -23,8 +23,6 @@ var allSchoolsToggle = document.getElementById('listToggle')
 var filtersToggle = document.getElementById('filtersToggle')
 var searchToggle = document.getElementById('searchToggle');
 
-var performanceToggle = document.getElementById('performanceToggle');
-
 var markerList = document.getElementById('markers-list')
 var typesList = document.getElementById('types-list');
 var interestAreasList = document.getElementById('interest-areas-list');
