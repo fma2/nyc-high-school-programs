@@ -40,9 +40,12 @@
 				<div id="toggle" class='rounded-toggle inline quiet'>
 					<a href="/" class='icon home'></a>
 					<input id='listToggle' type='radio' name='rtoggle' value='types' checked='checked'>
-					<label for='listToggle'>view all schools</label>
+					<label for='listToggle'>view all</label>
 					<input id='searchToggle' type='radio' name='rtoggle' value='search'>
 					<label for='searchToggle'>search</label>
+					<input id='filtersToggle' type='radio' name='rtoggle' value='types'>
+					<label for='filtersToggle'>filter</label>
+
 					<input id='typesToggle' type='radio' name='rtoggle' value='types'>
 					<label for='typesToggle'>filter by school types</label>
 					<input id='programsToggle' type='radio' name='rtoggle' value='programs'>
@@ -52,18 +55,20 @@
 				</div>
 			</div>
 		</div>
+		<div id="search-option">
+			<form class="search-form">
+				<fieldset class='with-icon'>
+					<span class='icon search'></span>
+					<input type='text' value='search' />
+				</fieldset>
+			</form>
+			<div id="search-results" class="pill"></div>
+		</div>
+		<div id="markers-list" class="pill">
+		</div>
 		<div id='filters'>
-			<div id="search-option">
-				<form class="search-form">
-					<fieldset class='with-icon'>
-						<span class='icon search'></span>
-						<input type='text' value='search' />
-					</fieldset>
-				</form>
-				<div id="search-results" class="pill"></div>
+			<div id="types-list" class="pill">
 			</div>
-			<div id="markers-list" class="pill"></div>
-			<div id="types-list" class="pill"></div>
 			<div id="interest-areas-list" class="pill"></div>
 			<div id="filtered-list" class="pill"></div>
 		</div>
