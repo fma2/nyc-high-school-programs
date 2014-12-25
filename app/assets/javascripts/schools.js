@@ -286,25 +286,7 @@ performanceToggle.onclick = function(e) {
 
 
 //Filtering methods for types
-function displayFilterList(pageElement, array, field) {
-  checkboxes =[];
-  // console.log("in displayFilterList")
-  for (var i = 0; i < array.length; i++) {
-    // Create an an input checkbox and label inside.
-    var listItem = pageElement.appendChild(document.createElement('a'));
-    listItem.setAttribute('class', 'col4 button quiet');
 
-    var checkbox = listItem.appendChild(document.createElement('input'));
-    var label = listItem.appendChild(document.createElement('label'));
-    checkbox.type = 'checkbox';
-    checkbox.id = array[i];
-    checkbox.checked = false;
-    label.innerHTML = array[i];
-    label.setAttribute('for', array[i]);
-    checkbox.addEventListener('change', function(){updateMapbyFilter(field)});
-    checkboxes.push(checkbox);
-  }
-}
 
 function updateMapbyFilter(field) {
   // console.log("in update map by filter")
