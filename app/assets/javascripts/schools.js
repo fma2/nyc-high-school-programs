@@ -288,32 +288,6 @@ performanceToggle.onclick = function(e) {
 //Filtering methods for types
 
 
-function updateMapbyFilter(field) {
-  // console.log("in update map by filter")
-  var enabled = {};
-
-  for (var i = 0; i < checkboxes.length; i++) {
-    if (checkboxes[i].checked) enabled[checkboxes[i].id] = true;
-  }
-  featureLayer.setFilter(function(feature) {
-    var x = (feature.properties[field] in enabled)
-    return (feature.properties[field] in enabled);
-  });
-
-  map.removeLayer(clusterGroup);
-  clusterGroup = new L.MarkerClusterGroup();
-  featureLayer.eachLayer(function(layer) {
-    clusterGroup.addLayer(layer);
-  })
-  map.addLayer(clusterGroup).setView([40.75, -74.09], 11);
-  clusterGroup.eachLayer(function(marker) {
-    addMarkerContent(marker)
-    var feature = marker.feature
-    filterItemObj[feature.properties[field]] = true;
-  })
-  createMarkerList(featureLayer)
-}
-
 
 function createMarkerList(data) {
   var filteredListSection = document.getElementById('filtered-list');
