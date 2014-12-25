@@ -284,37 +284,6 @@ performanceToggle.onclick = function(e) {
 }
 
 
-function updateMapbyProgramsFilter(featureLayer, field) {
-  var enabled = {};
-  for (var i = 0; i < checkboxes.length; i++) {
-    if (checkboxes[i].checked) enabled[checkboxes[i].id] = true;
-  }
-
-  featureLayer.setFilter(function(feature) {
-    var programsList = feature.properties.programs
-    for (i=0; i<programsList.length; i++) {
-      if (programsList[i][field] in enabled) {
-        return true;
-      }
-    }  
-  });
-
-  map.removeLayer(clusterGroup);
-  clusterGroup = new L.MarkerClusterGroup();
-  featureLayer.eachLayer(function(layer) {
-    clusterGroup.addLayer(layer);
-  })
-  map.addLayer(clusterGroup).setView([40.75, -74.09], 11);
-  clusterGroup.eachLayer(function(marker) {
-    addMarkerContent(marker)
-    var programsList = marker.feature.properties.programs
-    for (i=0; i<programsList.length; i++) {
-      filterItemObj[programsList[i][field]] = true;      
-    }
-  })
-  createMarkerList(featureLayer)
-}
-
 
 //Filtering methods for types
 function displayFilterList(pageElement, array, field) {
