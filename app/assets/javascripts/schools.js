@@ -272,17 +272,6 @@ function changeMap() {
 //////
 
 
-
-//Add performance data filter to menu on click
-performanceToggle.onclick = function(e) {
-  $("#types-list").hide();
-  $("#interest-areas-list").hide();
-  $(".search-form").hide();
-  $("#markers-list").hide();
-}
-
-
-
 //Filtering methods for types
 
 
