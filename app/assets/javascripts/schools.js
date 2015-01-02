@@ -2,7 +2,7 @@
 L.mapbox.accessToken = 'pk.eyJ1IjoiZm1hMiIsImEiOiJkcmdtd0NjIn0.dw0I__cIjfXpz37Yj0DQmw';
 
 //Place map and load all markers
-  var map = L.mapbox.map('map', 'fma2.kj0p9jdj', {zoomControl:false, attributionControl: false}).setView([40.75, -74.09], 11);
+var map = L.mapbox.map('map', 'fma2.kj0p9jdj', {zoomControl:false, attributionControl: false}).setView([40.75, -74.09], 11);
 map.addControl(L.mapbox.infoControl().addInfo('<a href="https://www.mapbox.com/about/maps/" target="_blank">Maps &copy; Mapbox &copy; OpenStreetMap</a>',{position: 'bottomright'}));
 
 var zoomControl = new L.Control.Zoom({position: 'bottomright' })
@@ -66,7 +66,7 @@ function addModalContent(marker) {
   '</dl>' +
   '<section class="information">' +
   '<div class="tabs-content">' +
-    '<div class="content`" id="overview">' +
+    '<div class="content" id="overview">' +
       ''+addOverviewToModal(properties)+'' +
     '</div>' +
     '<div class="content" id="details">' +  
@@ -93,8 +93,8 @@ $(document).on('closed.fndtn.reveal', '[data-reveal]', function () {
   // console.log(modal.context);
    $(document).foundation('reflow');
    console.log($('dd.top'));
-  ('dd.top').removeClass('active');
-  ('dd.content').removeClass('active');
+  // ('dd.top').removeClass('active');
+  // ('dd.content').removeClass('active');
 });
 }
 
