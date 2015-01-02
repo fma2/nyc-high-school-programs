@@ -1,6 +1,5 @@
-<div id='loader'><span class='message'>loading</span></div>
 
-<div class='col12'>
+<div class='col12 mobile-cols'>
 	<div class='contain'>
 		<div id='modal-content' class='animate modal modal-content'>
 			<form id='modal-name' class='modal-popup' method='post'>
@@ -22,14 +21,13 @@
 		</div>
 	</div>
 
-	<div class='center'>
+	<div class='col12'>
 		<div id="map"></div>
 	</div>
-
 	<div id='sidebar' class='col5 pin-left'>
-		<div id="top-section">						
+		<div id="top-section" class="col12 clearfix prose">						
+			<h1 id="title" class='fancy col12'>hs[blueprint]</h1>
 			<h6 id="subtitle">nyc</h6>
-			<h1 id="title" class='fancy'>hs[blueprint]</h1>
 
 			<br>
 			<br>
@@ -49,29 +47,29 @@
 				</div>
 			</div>
 		</div>
-		<div id="bottom-section">
+		<div id="bottom-section" class="col12 clearfix prose">
 			<div id="search-option">
-				<form class="search-form">
+				<form class="search-form col12 clearfix">
 					<fieldset class='with-icon'>
 						<span class='icon search'></span>
 						<input type='text' value='search' />
 					</fieldset>
 				</form>
-				<div id="search-results" class="pill"></div>
+				<div id="search-results" class="pill col12 clearfix"></div>
 			</div>
-			<div id="markers-list" class="pill">
+			<div id="markers-list" class="pill col12 clearfix">
 			</div>
 			<div id='filters'>
 				<h3>school types</h3>
-				<div id="types-list" class="pill"></div>
+				<div id="types-list" class="pill col12 clearfix"></div>
 				<h3>interest areas</h3>
-				<div id="interest-areas-list" class="pill"></div>
+				<div id="interest-areas-list" class="pill col12 clearfix"></div>
 				<br>
 				<br>
 
 				<h3>results (select to jump to school)</h3>
 
-				<div id="filtered-list" class="pill"></div>
+				<div id="filtered-list" class="pill col12 clearfix"></div>
 			</div>
 		</div>
 		<footer>
@@ -85,8 +83,12 @@
 		</div>
 
 	</div>
+
+
 </div>
 
+<div id='loader'>
+</div>
 
 
 

@@ -1,24 +1,5 @@
-//Mapbox access token
-L.mapbox.accessToken = 'pk.eyJ1IjoiZm1hMiIsImEiOiJkcmdtd0NjIn0.dw0I__cIjfXpz37Yj0DQmw';
-
-//Place map and load all markers
-var map = L.mapbox.map('map', 'fma2.kj0p9jdj', {zoomControl:false, attributionControl: false}).setView([40.75, -74.09], 11);
-map.addControl(L.mapbox.infoControl().addInfo('<a href="https://www.mapbox.com/about/maps/" target="_blank">Maps &copy; Mapbox &copy; OpenStreetMap</a>',{position: 'bottomright'}));
-
-var zoomControl = new L.Control.Zoom({position: 'bottomright' })
-zoomControl.addTo(map);
-
-// var shareControl = L.mapbox.shareControl('fma2.kgkm6i0a', {position:'bottomright'})
-// shareControl.addTo(map)
-
-//Geocoder search bar
-// Initialize the geocoder control and add it to the map.
-var geocoderControl = L.mapbox.geocoderControl('mapbox.places-v1', {
-  autocomplete: true, position: 'topright', keepOpen: true
-});
-geocoderControl.addTo(map);
-
 //Variables for items on menu
+var toggleBar = document.getElementById('toggleBar')
 var allSchoolsToggle = document.getElementById('listToggle')
 var filtersToggle = document.getElementById('filtersToggle')
 var searchToggle = document.getElementById('searchToggle');
@@ -30,9 +11,6 @@ var clusterGroup, featureLayer;
 var filterItemObj = {}, checkboxes=[];
 var rawData;
 
-$("#search-option").hide();
-$("#filters").hide()
-
 //Place all school markers on map at load
 $.ajax({
   dataType: 'json',
@@ -40,105 +18,22 @@ $.ajax({
   type: 'GET'
 }).success(function(data){
   rawData = data;
+  loadAllSchools(data);
+});
+
+//Function that places all schools on map
+function loadAllSchools(data) {
+  $("#search-option").hide();
+  $("#filters").hide();
+  $("#markers-list").show();
   featureLayer = L.mapbox.featureLayer(data)
   clusterGroup = createClusterGroup(featureLayer)
-  map.addLayer(clusterGroup);
+  map.addLayer(clusterGroup);  
   clusterGroup.eachLayer(function(marker) {
     addMarkerContent(marker);
-  })
-  createAllSchoolsMarkerList(featureLayer);
-});
-
-//Add modal content with Foundation
-function addModalContent(marker) {
-
-  var properties = marker.feature.properties
-  var programs = properties.programs
-  var modal = 
-  '<div id="modal' + properties.dbn + '" class="reveal-modal" data-reveal>' +
-  '<div id="modal-map"></div>' +
-  '<h3 class="title fancy">' + properties.name + '</h3>' +
-  '<dl class="tabs" id="modalTabs" data-tab>' +
-  '<dd class="top" id="overview-tab"><a href="#overview"><h3>overview</h3></a></dd>' +
-  '<dd class="top" id="details-tab"><a href="#details"><h3>details</h3></a></dd>' +
-  '<dd class="top" id="programs-tab"><a href="#programs"><h3>special programs</h3></a></dd>' +
-  '<dd class="top" id="performance-tab"><a href="#performance"><h3>performance</h3></a></dd>' +
-  '</dl>' +
-  '<section class="information">' +
-  '<div class="tabs-content">' +
-    '<div class="content" id="overview">' +
-      ''+addOverviewToModal(properties)+'' +
-    '</div>' +
-    '<div class="content" id="details">' +  
-      ''+addDetailsToModal(properties)+'' +  //add information on schools' programs here
-    '</div>' +
-    '<div class="content" id="programs">' +
-      ''+addProgramsToModal(properties.programs)+'' + //add information on schools' programs here
-    '</div>' +
-    '<div class="content" id="performance">' +
-      '' + //add information on schools' performance here
-    '</div>' +
-  '</div>' +
-  '<a class="close-reveal-modal">&#215;</a>'+
-  '</div>'
-
-  $("body").append(modal);
-  var modalId = '#modal' + properties.dbn;
-  $(document).foundation('tab', 'reflow');
-  // $('a.reveal-link').trigger('click');
-// $('a.close-reveal-modal').trigger('click');
-$(modalId).foundation('reveal', 'close', {})
-$(document).on('closed.fndtn.reveal', '[data-reveal]', function () {
-  // var modal = $(this);
-  // console.log(modal.context);
-   $(document).foundation('reflow');
-   console.log($('dd.top'));
-  ('dd.top').removeClass('active');
-  ('dd.content').removeClass('active');
-});
-}
-
-
-function addOverviewToModal(properties) {
-  var overview = '<p class="address">' + properties.address  + ' | ' +  properties.boro + '</p>' +
-  '<p class="contact"><span class="phone-number">' + properties.phone + '</span>' + ' | ' +'<span class="website"><a target="_blank" href="http://' + properties.website + '">website</a></span>' +
-  '<p class="grades">Grades ' + properties.grade_span_min + ' to ' + properties.grade_span_max + '</p>' +
-  '<p class="type">' + properties.type + '</p>' +
-  '<p class=program-highlights>' + properties.program_highlights + '</p>';
-  return overview
-}
-
-function addDetailsToModal(properties) {
-  var details =
-  '<p class="dbn">' + properties.dbn + '</p>' +
-  '<p class"type">' + properties.type + '</p>' +
-  '<p>' + properties.grade_span_min + ' to ' + properties.grade_span_max + '</p>' +
-  '<p>' + properties.total_students + '</p>' +
-  '<p>' + properties.overview_paragraph + '</p>' +
-  '<p>' + properties.extracurricular_activities + '</p>' +
-  '<p>' + properties.se_services + '</p>'; 
-  return details;
-}
-
-function addProgramsToModal(programsData) {
-  var programs = [];
-  // console.log(programsData)
-  for (i=0; i< programsData.length; i++) {
-    // programs << programsData[i].program_name
-    programs.push('<h2 class="program-title">' + programsData[i].program_name + '</h2>' +
-      '<p class="program-interest-area">' + programsData[i].interest_area + '</p>' +
-      '<p class="program-selection-method">'+ programsData[i].selection_method + '</p>' +
-      '<p class="program-url">' + programsData[i].urls + '</p>')
-  }
-  if (programs === []) {
-    return'<p>No special programs</p>';
-  } else {
-    return programs;    
-  }
-}
-
-function addPerformanceToModal(properties) {
-
+  })  
+  createAllSchoolsMarkerList(featureLayer);  
+  finishedLoading();
 }
 
 //Displaying of markers methods
@@ -199,39 +94,30 @@ searchToggle.onclick = function(e) {
   $("#markers-list").hide();
   $("#filtered-list").hide();
   $("#search-option").show();
-
 }
+
 //Marker list toggle
 allSchoolsToggle.onclick = function(e) {
-  map.removeLayer(clusterGroup);
-  $("#filters").hide()
-  $("#search-option").hide();
-  $("#markers-list").show();
-  markerList.innerHTML = '';
-  featureLayer = L.mapbox.featureLayer(rawData)
-  clusterGroup = createClusterGroup(featureLayer)
-  map.addLayer(clusterGroup).setView([40.75, -74.09], 11);
-  clusterGroup.eachLayer(function(marker) {
-    addMarkerContent(marker);
-  })
-  createAllSchoolsMarkerList(featureLayer);
+  startLoading();  
+  setTimeout(function() {
+    loadAllSchools(rawData);
+  }, 500);
 }
 
+//Filters toggle
 filtersToggle.onclick = function(e) {
   map.removeLayer(clusterGroup);
   $("#markers-list").hide();
   $("#search-option").hide(); 
-  $("#filters").show()
-  
+  $("#filters").show();  
   typesList.innerHTML = '';
-  interestAreasList.innerHTML = '';
-
+  interestAreasList.innerHTML = '';  
   filtersLayer = L.mapbox.featureLayer(rawData);
-  var typesArr = createFilterList(filtersLayer, 'type')
-  var programsArr = createFilterList(filtersLayer, 'interest_area')
+  var typesArr = createFilterList(filtersLayer, 'type');
+  var programsArr = createFilterList(filtersLayer, 'interest_area');
 
-  displayFilterList(typesList, typesArr, 'type')
-  displayFilterList(interestAreasList, programsArr, 'interest_area')
+  displayFilterList(typesList, typesArr, 'type');
+  displayFilterList(interestAreasList, programsArr, 'interest_area');
 }
 
 //Filtering methods
