@@ -15,7 +15,7 @@ zoomControl.addTo(map);
 //Geocoder search bar
 // Initialize the geocoder control and add it to the map.
 var geocoderControl = L.mapbox.geocoderControl('mapbox.places-v1', {
-  autocomplete: true, position: 'topright', keepOpen: true
+  autocomplete: true, position: 'topright', keepOpen: false
 });
 geocoderControl.addTo(map);
 
@@ -78,7 +78,7 @@ function addModalContent(marker) {
       ''+addProgramsToModal(properties.programs)+'' + //add information on schools' programs here
     '</div>' +
     '<div class="content" id="performance">' +
-      '' + //add information on schools' performance here
+      ''+addPerformanceToModal(properties)+'' + //add information on schools' performance here
     '</div>' +
   '</div>' +
   '<a class="close-reveal-modal">&#215;</a>'+
@@ -124,9 +124,7 @@ function addDetailsToModal(properties) {
 
 function addProgramsToModal(programsData) {
   var programs = [];
-  // console.log(programsData)
   for (i=0; i< programsData.length; i++) {
-    // programs << programsData[i].program_name
     programs.push('<h2 class="program-title">' + programsData[i].program_name + '</h2>' +
       '<p class="program-interest-area">' + programsData[i].interest_area + '</p>' +
       '<p class="program-selection-method">'+ programsData[i].selection_method + '</p>' +
@@ -140,7 +138,7 @@ function addProgramsToModal(programsData) {
 }
 
 function addPerformanceToModal(properties) {
-
+  return '<p>This feature is coming soon!</p>';
 }
 
 //Displaying of markers methods
