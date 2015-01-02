@@ -5,6 +5,7 @@ L.mapbox.accessToken = 'pk.eyJ1IjoiZm1hMiIsImEiOiJkcmdtd0NjIn0.dw0I__cIjfXpz37Yj
 var map = L.mapbox.map('map', 'fma2.kj0p9jdj', {zoomControl:false, attributionControl: false}).setView([40.75, -74.09], 11);
 map.addControl(L.mapbox.infoControl().addInfo('<a href="https://www.mapbox.com/about/maps/" target="_blank">Maps &copy; Mapbox &copy; OpenStreetMap</a>',{position: 'bottomright'}));
 
+
 var zoomControl = new L.Control.Zoom({position: 'bottomright' })
 zoomControl.addTo(map);
 
@@ -42,11 +43,12 @@ $.ajax({
   rawData = data;
   featureLayer = L.mapbox.featureLayer(data)
   clusterGroup = createClusterGroup(featureLayer)
-  map.addLayer(clusterGroup);
+  map.addLayer(clusterGroup);  
+  finishedLoading();
   clusterGroup.eachLayer(function(marker) {
     addMarkerContent(marker);
-  })
-  createAllSchoolsMarkerList(featureLayer);
+  })  
+  createAllSchoolsMarkerList(featureLayer);  
 });
 
 //Add modal content with Foundation
