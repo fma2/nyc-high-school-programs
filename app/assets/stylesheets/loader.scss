@@ -1,0 +1,13 @@
+#loader {
+  position:absolute; top:0; bottom:0; width:100%;
+  background: #8AB8E6;
+  opacity: 0.90;
+  transition:background 1s ease-out;
+  -webkit-transition:background 1s ease-out;
+}
+#loader.done {
+  background:rgba(255, 255, 255, 0);
+}
+#loader.hide {
+  display:none;
+}

@@ -1,7 +1,7 @@
 //Variables for items on menu
-var toggleBar = document.getElementById('toggleBar')
-var allSchoolsToggle = document.getElementById('listToggle')
-var filtersToggle = document.getElementById('filtersToggle')
+var toggleBar = document.getElementById('toggleBar');
+var allSchoolsToggle = document.getElementById('listToggle');
+var filtersToggle = document.getElementById('filtersToggle');
 var searchToggle = document.getElementById('searchToggle');
 
 var markerList = document.getElementById('markers-list')
@@ -151,11 +151,6 @@ function displayFilterList(pageElement, array, field) {
       checkbox.id = array[i];
       checkbox.checked = false;
       checkbox.name = field;
-      // if (field == "type") {
-      //   checkbox.name = "type";
-      // } else if (field =="interest_area") {
-      //   checkbox.name = "interest_area";
-      // }
       label.innerHTML = array[i];
       label.setAttribute('for', array[i]);
       checkboxes.push(checkbox);
