@@ -34,6 +34,8 @@ class SchoolsController < ApplicationController
 					dbn: school.dbn,
 					grade_span_min: school.grade_span_min,
 					grade_span_max: school.grade_span_max,
+					se_services: school.se_services,
+					extracurricular_activities: school.extracurricular_activities,
 					ontrack_year1_2013: school.ontrack_year1_2013,
         	graduation_rate_2013: school.graduation_rate_2013,
         	college_career_rate_2013: school.college_career_rate_2013,

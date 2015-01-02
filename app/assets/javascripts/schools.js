@@ -2,7 +2,7 @@
 L.mapbox.accessToken = 'pk.eyJ1IjoiZm1hMiIsImEiOiJkcmdtd0NjIn0.dw0I__cIjfXpz37Yj0DQmw';
 
 //Place map and load all markers
-var map = L.mapbox.map('map', 'fma2.kgkm6i0a', {zoomControl:false, attributionControl: false}).setView([40.75, -74.09], 11);
+var map = L.mapbox.map('map', 'fma2.kj0p9jdj', {zoomControl:false, attributionControl: false}).setView([40.75, -74.09], 11);
 map.addControl(L.mapbox.infoControl().addInfo('<a href="https://www.mapbox.com/about/maps/" target="_blank">Maps &copy; Mapbox &copy; OpenStreetMap</a>',{position: 'bottomright'}));
 
 var zoomControl = new L.Control.Zoom({position: 'bottomright' })
@@ -51,39 +51,94 @@ $.ajax({
 
 //Add modal content with Foundation
 function addModalContent(marker) {
+
   var properties = marker.feature.properties
   var programs = properties.programs
   var modal = 
   '<div id="modal' + properties.dbn + '" class="reveal-modal" data-reveal>' +
   '<div id="modal-map"></div>' +
   '<h3 class="title fancy">' + properties.name + '</h3>' +
+  '<dl class="tabs" id="modalTabs" data-tab>' +
+  '<dd class="top" id="overview-tab"><a href="#overview"><h3>overview</h3></a></dd>' +
+  '<dd class="top" id="details-tab"><a href="#details"><h3>details</h3></a></dd>' +
+  '<dd class="top" id="programs-tab"><a href="#programs"><h3>special programs</h3></a></dd>' +
+  '<dd class="top" id="performance-tab"><a href="#performance"><h3>performance</h3></a></dd>' +
+  '</dl>' +
   '<section class="information">' +
   '<div class="tabs-content">' +
-    '<div class="content active" id="basics">' +
-      '<p class="address">' + properties.address + '</p>' +
-      '<p class="contact"><span class="phone-number">' + properties.phone + '</span>' + ' | ' +'<span class="website"><a target="_blank" href="http://' + properties.website + '">website</a></span>' +
-      '<p class="grades">Grades ' + properties.grade_span_min + ' to ' + properties.grade_span_max + '</p>' +
-      '<p class="address">' + properties.type + '</p>' +
-      '<p class=program-highlights>' + properties.program_highlights + '</p>' +
+    '<div class="content" id="overview">' +
+      ''+addOverviewToModal(properties)+'' +
+    '</div>' +
+    '<div class="content" id="details">' +  
+      ''+addDetailsToModal(properties)+'' +  //add information on schools' programs here
     '</div>' +
     '<div class="content" id="programs">' +
-      '<p></p>' + //add information on schools' programs here
+      ''+addProgramsToModal(properties.programs)+'' + //add information on schools' programs here
     '</div>' +
     '<div class="content" id="performance">' +
-      '<p></p>' + //add information on schools' performance here
+      '' + //add information on schools' performance here
     '</div>' +
   '</div>' +
-  '<dl class="tabs" data-tab>' +
-  '<dd class="active"><a href="#basics"><h3>basics</h3></a></dd>' +
-  '<dd><a href="#programs"><h3>programs</h3></a></dd>' +
-  '<dd><a href="#performance"><h3>performance</h3></a></dd>' +
-  '</dl>' +
   '<a class="close-reveal-modal">&#215;</a>'+
   '</div>'
 
   $("body").append(modal);
   var modalId = '#modal' + properties.dbn;
-  $(modalId).foundation('reveal', 'close')
+  $(document).foundation('tab', 'reflow');
+  // $('a.reveal-link').trigger('click');
+// $('a.close-reveal-modal').trigger('click');
+$(modalId).foundation('reveal', 'close', {})
+$(document).on('closed.fndtn.reveal', '[data-reveal]', function () {
+  // var modal = $(this);
+  // console.log(modal.context);
+   $(document).foundation('reflow');
+   console.log($('dd.top'));
+  ('dd.top').removeClass('active');
+  ('dd.content').removeClass('active');
+});
+}
+
+
+function addOverviewToModal(properties) {
+  var overview = '<p class="address">' + properties.address  + ' | ' +  properties.boro + '</p>' +
+  '<p class="contact"><span class="phone-number">' + properties.phone + '</span>' + ' | ' +'<span class="website"><a target="_blank" href="http://' + properties.website + '">website</a></span>' +
+  '<p class="grades">Grades ' + properties.grade_span_min + ' to ' + properties.grade_span_max + '</p>' +
+  '<p class="type">' + properties.type + '</p>' +
+  '<p class=program-highlights>' + properties.program_highlights + '</p>';
+  return overview
+}
+
+function addDetailsToModal(properties) {
+  var details =
+  '<p class="dbn">' + properties.dbn + '</p>' +
+  '<p class"type">' + properties.type + '</p>' +
+  '<p>' + properties.grade_span_min + ' to ' + properties.grade_span_max + '</p>' +
+  '<p>' + properties.total_students + '</p>' +
+  '<p>' + properties.overview_paragraph + '</p>' +
+  '<p>' + properties.extracurricular_activities + '</p>' +
+  '<p>' + properties.se_services + '</p>'; 
+  return details;
+}
+
+function addProgramsToModal(programsData) {
+  var programs = [];
+  // console.log(programsData)
+  for (i=0; i< programsData.length; i++) {
+    // programs << programsData[i].program_name
+    programs.push('<h2 class="program-title">' + programsData[i].program_name + '</h2>' +
+      '<p class="program-interest-area">' + programsData[i].interest_area + '</p>' +
+      '<p class="program-selection-method">'+ programsData[i].selection_method + '</p>' +
+      '<p class="program-url">' + programsData[i].urls + '</p>')
+  }
+  if (programs === []) {
+    return'<p>No special programs</p>';
+  } else {
+    return programs;    
+  }
+}
+
+function addPerformanceToModal(properties) {
+
 }
 
 //Displaying of markers methods
@@ -132,7 +187,7 @@ function createAllSchoolsMarkerList(data) {
     school.setAttribute('class', 'col6 button quiet');
     school.innerHTML = layer.toGeoJSON().properties.name;
     school.onclick = function() {
-     map.setView(layer.getLatLng(), 16);
+     map.setView(layer.getLatLng(), 22);
      layer.openPopup();
    };
  });
@@ -179,6 +234,7 @@ filtersToggle.onclick = function(e) {
   displayFilterList(interestAreasList, programsArr, 'interest_area')
 }
 
+//Filtering methods
 function createFilterList(data, field) {
   var filterItems = [], filterItemObj = {}; 
   data.eachLayer(function(marker) {
@@ -193,7 +249,7 @@ function createFilterList(data, field) {
     }
   })
   for (var k in filterItemObj) filterItems.push(k);
-  return filterItems;   
+    return filterItems;   
 }
 
 function displayFilterList(pageElement, array, field) {
@@ -208,11 +264,12 @@ function displayFilterList(pageElement, array, field) {
       checkbox.type = 'checkbox';
       checkbox.id = array[i];
       checkbox.checked = false;
-      if (field == "type") {
-        checkbox.name = "type";
-      } else if (field =="interest_area") {
-        checkbox.name = "interest_area";
-      }
+      checkbox.name = field;
+      // if (field == "type") {
+      //   checkbox.name = "type";
+      // } else if (field =="interest_area") {
+      //   checkbox.name = "interest_area";
+      // }
       label.innerHTML = array[i];
       label.setAttribute('for', array[i]);
       checkboxes.push(checkbox);
@@ -230,7 +287,7 @@ function changeMap() {
     if (checkboxes[i].checked) {
       enabled[checkboxes[i].id] = true;
       namesOfChecked[checkboxes[i].name] = true;
-      }
+    }
   }
   console.log(namesOfChecked);
 
@@ -247,13 +304,13 @@ function changeMap() {
     } else if ("type" in namesOfChecked) {
       return (feature.properties["type"] in enabled);      
     } else if ("interest_area" in namesOfChecked) {
-        var programsList = feature.properties.programs
-        for (i=0; i<programsList.length; i++) {
-          if (programsList[i]['interest_area'] in enabled) {
-            return true;
-          }
+      var programsList = feature.properties.programs
+      for (i=0; i<programsList.length; i++) {
+        if (programsList[i]['interest_area'] in enabled) {
+          return true;
         }
-      } 
+      }
+    } 
   });
   
   map.removeLayer(clusterGroup);
@@ -277,7 +334,7 @@ function createMarkerList(data) {
     school.setAttribute('class', 'col4 quiet button');
     school.innerHTML = layer.toGeoJSON().properties.name;
     school.onclick = function() {
-     map.setView(layer.getLatLng(), 16);
+     map.setView(layer.getLatLng(), 22);
      layer.openPopup();
    };
  });
@@ -288,35 +345,35 @@ function createMarkerList(data) {
 var geolocate = document.getElementById('geolocate');
 var userLocationLayer = L.mapbox.featureLayer().addTo(map);
 if (!navigator.geolocation) {
-    geolocate.innerHTML = 'Geolocation is not available';
+  geolocate.innerHTML = 'Geolocation is not available';
 } else {
-    geolocate.onclick = function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        map.locate();
-    };
+  geolocate.onclick = function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    map.locate();
+  };
 }
 
 // Once we've got a position, zoom and center the map
 // on it, and add a single marker.
 map.on('locationfound', function(e) {
-    map.fitBounds(e.bounds);
-    userLocationLayer.setGeoJSON({
-        type: 'Feature',
-        geometry: {
-            type: 'Point',
-            coordinates: [e.latlng.lng, e.latlng.lat]
-        },
-        properties: {
-            'marker-color': '#ff8888',
-            'marker-symbol': 'star'
-        }
-    });
+  map.fitBounds(e.bounds);
+  userLocationLayer.setGeoJSON({
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [e.latlng.lng, e.latlng.lat]
+    },
+    properties: {
+      'marker-color': '#ff8888',
+      'marker-symbol': 'star'
+    }
+  });
 });
 
 // If the user chooses not to allow their location
 // to be shared, display an error message.
 map.on('locationerror', function() {
-    geolocate.innerHTML = 'Position could not be found';
+  geolocate.innerHTML = 'Position could not be found';
 });
 
