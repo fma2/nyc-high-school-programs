@@ -86,16 +86,16 @@ function addModalContent(marker) {
   var modalId = '#modal' + properties.dbn;
   $(document).foundation('tab', 'reflow');
   // $('a.reveal-link').trigger('click');
-// $('a.close-reveal-modal').trigger('click');
-$(modalId).foundation('reveal', 'close', {})
-$(document).on('closed.fndtn.reveal', '[data-reveal]', function () {
+  // $('a.close-reveal-modal').trigger('click');
+  $(modalId).foundation('reveal', 'close', {})
+  $(document).on('closed.fndtn.reveal', '[data-reveal]', function () {
   // var modal = $(this);
   // console.log(modal.context);
-   $(document).foundation('reflow');
-   console.log($('dd.top'));
-  ('dd.top').removeClass('active');
-  ('dd.content').removeClass('active');
-});
+   // $(document).foundation('reflow');
+   // console.log($('dd.top'));
+  // ('dd.top').removeClass('active');
+  // ('dd.content').removeClass('active');
+  });
 }
 
 
