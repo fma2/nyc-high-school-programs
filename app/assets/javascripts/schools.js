@@ -1,8 +1,9 @@
 //Variables for items on menu
-var toggleBar = document.getElementById('toggleBar')
-var allSchoolsToggle = document.getElementById('listToggle')
-var filtersToggle = document.getElementById('filtersToggle')
+var toggleBar = document.getElementById('toggleBar');
+var allSchoolsToggle = document.getElementById('listToggle');
+var filtersToggle = document.getElementById('filtersToggle');
 var searchToggle = document.getElementById('searchToggle');
+var specificLocationToggle = document.getElementById('specificLocationToggle');
 
 var markerList = document.getElementById('markers-list')
 var typesList = document.getElementById('types-list');
@@ -34,6 +35,29 @@ function loadAllSchools(data) {
   })  
   createAllSchoolsMarkerList(featureLayer);  
   finishedLoading();
+}
+
+function myFunction() {
+  var x = document.getElementById("modal-name");
+    var text = "";
+    var i;
+    for (i = 0; i < x.length ;i++) {
+        text += x.elements[i].value + " ";
+    }
+    var geocoder = L.mapbox.geocoder('mapbox.places-v1')
+    geocoder.query(text, showMap);
+    $("modal-content").removeClass('active')
+}
+
+function showMap(err, data) {
+    // The geocoder can return an area, like a city, or a
+    // point, like an address. Here we handle both cases,
+    // by fitting the map bounds to an area or zooming to a point.
+    if (data.lbounds) {
+        map.fitBounds(data.lbounds);
+    } else if (data.latlng) {
+        map.setView([data.latlng[0], data.latlng[1]], 13);
+    }
 }
 
 //Displaying of markers methods
@@ -151,11 +175,6 @@ function displayFilterList(pageElement, array, field) {
       checkbox.id = array[i];
       checkbox.checked = false;
       checkbox.name = field;
-      // if (field == "type") {
-      //   checkbox.name = "type";
-      // } else if (field =="interest_area") {
-      //   checkbox.name = "interest_area";
-      // }
       label.innerHTML = array[i];
       label.setAttribute('for', array[i]);
       checkboxes.push(checkbox);
