@@ -1,0 +1,58 @@
+.popup {
+  font-family:'Quicksand Book', Arial, sans-serif;
+  overflow:auto;
+}
+
+.popup .info {
+  width:69%;
+  margin-left:5%;
+}
+
+.popup .info,.popup .right-arrow {
+  float:left
+}
+
+.popup .right-arrow {
+  position:relative;
+  margin-top:6%;
+  right:-5px;
+  height:40px
+}
+
+.popup .info .popup-title {
+  font-size:20px;
+  line-height:1.1em;
+  margin-bottom:2px;
+  text-transform:uppercase;
+  color:#1299b8
+}
+
+.popup .info p {
+  line-height:1em;
+}
+
+.popup .type {
+  width:16%
+}
+
+.popup .type p {
+  height:37px;
+  float:right
+}
+
+
+.reveal-modal {
+  overflow-y: scroll;
+  overflow-x: auto;
+  position:fixed;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  width:100%;
+  z-index:9999;
+  outline:0; 
+}
+
+.reveal-modal-bg {
+}
