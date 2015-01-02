@@ -20,8 +20,8 @@ body { margin:0; padding:0; }
 
 #loader {
     position:absolute; top:0; bottom:0; width:100%;
-    background: #D1F0FF;
-    opacity: 0.75;
+    background: #8AB8E6;
+    opacity: 0.95;
     transition:background 1s ease-out;
     -webkit-transition:background 1s ease-out;
 }
@@ -35,5 +35,5 @@ body { margin:0; padding:0; }
 	position: absolute;
   top: 0; bottom:0; left: 0; right:0;
   margin: auto;
-  width: 10em;
+  width: 7em;
 }
