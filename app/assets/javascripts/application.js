@@ -20,13 +20,14 @@
 $(function(){ $(document).foundation(); });
 
 var loader = document.getElementById('loader');
+
 startLoading();
 function startLoading() {
   loader.className = '';
 }
-function finishedLoading() {
+function finishedLoading() {	
   loader.className = 'done';
   setTimeout(function() {
     loader.className = 'hide';
-  }, 5000);
+  }, 500);
 }
