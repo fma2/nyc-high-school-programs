@@ -21,7 +21,6 @@ $(function(){ $(document).foundation(); });
 
 var loader = document.getElementById('loader');
 startLoading();
-finishedLoading();
 function startLoading() {
   loader.className = '';
 }
@@ -31,9 +30,3 @@ function finishedLoading() {
     loader.className = 'hide';
   }, 5000);
 }
-
-$('a.close').click(function() {
-   var qqq = $(this).closest('.modal');
-   $(qqq).removeClass('active');
-});
-
