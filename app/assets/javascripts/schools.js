@@ -93,8 +93,8 @@ $(document).on('closed.fndtn.reveal', '[data-reveal]', function () {
   // console.log(modal.context);
    $(document).foundation('reflow');
    console.log($('dd.top'));
-  ('dd.top').removeClass('active');
-  ('dd.content').removeClass('active');
+  // ('dd.top').removeClass('active');
+  // ('dd.content').removeClass('active');
 });
 }
 
