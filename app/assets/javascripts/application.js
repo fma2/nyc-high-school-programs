@@ -31,3 +31,9 @@ function finishedLoading() {
     loader.className = 'hide';
   }, 5000);
 }
+
+$('a.close').click(function() {
+   var qqq = $(this).closest('.modal');
+   $(qqq).removeClass('active');
+});
+
