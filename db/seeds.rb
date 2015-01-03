@@ -54,6 +54,6 @@ end
 high_school_program_data_2014_15.each do |program|
 	school = School.find_by(dbn: program["dbn"])
 	if school
-		school.programs << Program.create(program_code: program["program_code"], program_name: program["program_name"], dbn: program["dbn"], printed_school_name: program["printed_school_name"], interest_area: program["interest_area"], selection_method: program["selection_method"], selection_method_abbrevi: program["selection_method_abbreviated"], directory_page_: program["directory_page_"], borough: program["borough"], urls: program["urls"])
+		school.programs << Program.create(program_code: program["program_code"], program_name: program["program_name"], dbn: program["dbn"], school_name: program["printed_school_name"], interest_area: program["interest_area"], selection_method: program["selection_method"], selection_method_abbrevi: program["selection_method_abbreviated"], directory_page_: program["directory_page_"], borough: program["borough"], urls: program["urls"])
 	end
 end

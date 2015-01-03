@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 20141206192523) do
     t.string   "program_code"
     t.string   "program_name"
     t.string   "dbn"
-    t.string   "printed_school_name"
+    t.string   "school_name"
     t.string   "interest_area"
     t.string   "selection_method"
     t.string   "selection_method_abbrevi"
