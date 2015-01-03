@@ -36,6 +36,11 @@ function loadAllSchools(data) {
   finishedLoading();
 }
 
+//search keyup callback
+$("#search_text").keyup(function(event) {
+  $.get('/search?search='+ $(this).val());
+});
+
 //Displaying of markers methods
 function addMarkerContent(marker) {
   var rightArrow = document.createElement("img")
