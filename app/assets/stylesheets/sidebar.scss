@@ -1,11 +1,10 @@
 #sidebar {
   left: 20px;
-  overflow:auto;
-
+  overflow:scroll;
 }
 
 a {
-  overflow: auto;
+  overflow: hidden;
 }
 
 #filters {

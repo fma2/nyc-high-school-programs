@@ -1,0 +1,6 @@
+<h6># schools found: <%= @results.length %></h5>
+<% @results.each do |item| %>
+<div class="result-item">
+	<p><%= item.content %> </p>	
+</div>
+<% end %>
